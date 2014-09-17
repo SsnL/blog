@@ -1,28 +1,31 @@
 ---
 layout: post
-title: "General Birthday Problem"
-modified:
-categories: 
-excerpt:
-tags: [CS 70]
-image:
-  feature:
-date: 2014-09-17T10:32:56-07:00
+title: General Birthday Problem
+modified: null
+categories: null
+excerpt: null
+tags: 
+  - CS 70
+image: 
+  feature: null
+date: {}
+published: true
 ---
 
 **Problem:**
 Assume that everyone's birthday is uniformly distributed in 365 days of a year. What is the probability that no two people have birthdays with difference less than or equal to $k$ days among $n$ people? (idea originates from discussion problem)
         
 **Solution:**
-If $$$n(k + 1) > 365$$$, the probability is clearly 0. $$$\mathbb{P} = 0$$$
+If $$n(k + 1) > 365$$, the probability is clearly 0. $$$\mathbb{P} = 0$$$
         
-If $$$k = 0$$$, the problem degenerates into the classic birthday problem. The solution is as follows. $$\mathbb{P} = \frac{365!}{365^n \cdot (365 - k + 1)!}$$
-        Otherwise, we number the 365 days as $d_i$, $i \in \{1, \cdots, 365\}$ and divide the problem into two cases:
-        \begin{enumerate}
-            \item
-            No one is born during $\{d_{365-k+1}, \cdots, d_{365}\}$. \par
-            Let the $n$ people be $P_i$, $i \in \{1, \cdots, n\}$. Then we combine each $P_i$'s birthday with the $k$ days right after it. Then we have $n$ combined elements and $365 - n(k + 1)$ days. The problem transforms into picking $n$ days from a row of $365 - nk$ days and replacing them with our $n$ combined elements. \par
-            We have $n! {365 - nk \choose n} = (365 - nk)_n$ possible cases each with equal probability.
+If $$k = 0$$, the problem degenerates into the classic birthday problem. The solution is as follows. $$\mathbb{P} = \frac{365!}{365^n \cdot (365 - k + 1)!}$$
+
+Otherwise, we number the 365 days as $d_i$, $i \in \{1, \cdots, 365\}$ and divide the problem into two cases:
++ No one is born during $$\{d_{365-k+1}, \cdots, d_{365}\}$$.
+
+Let the $n$ people be $$P_i$$, $$i \in \{1, \cdots, n\}$$. Then we combine each $$P_i$$'s birthday with the $$k$$ days right after it. Then we have $$n$$ combined elements and $$365 - n(k + 1)$$ days. The problem transforms into picking $n$ days from a row of $$365 - nk$$ days and replacing them with our $$n$$ combined elements.
+
+We have $$n! {365 - nk \choose n} = (365 - nk)_n$$ possible cases each with equal probability.
 
             \item
             Someone is born during $\{d_{365 - k + 1}, \cdots, d_{365}\}$. \par
