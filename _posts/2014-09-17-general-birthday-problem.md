@@ -3,7 +3,7 @@ layout: post
 title: General Birthday Problem
 modified: null
 categories: null
-excerpt: null
+excerpt: General Birthday Problem
 tags: 
   - CS 70
 image: 
@@ -42,7 +42,7 @@ Otherwise, we number the 365 days as $$d_i$$, $$i \in \{1, \cdots, 365\}$$ and d
 
     Apparently, no two people can both have birthdays in that range. Therefore, the problem becomes how to put $n - 1$ people's birthdays in the rest $$365 - k - 1$$ days. 
 
-    Notice that this situation is different with the situation in the problem where the 365 days form a cycle. So, using the method in $(a)$, We have $$(n - 1)! {365 - k - 1 - (n - 1)k \choose n - 1} = (365 - nk - 1)_{n - 1}$$ possible cases each with equal probability.
+    Notice that this situation is different with the situation in the problem where the 365 days form a cycle. So, using the method in the first case, We have $$(n - 1)! {365 - k - 1 - (n - 1)k \choose n - 1} = (365 - nk - 1)_{n - 1}$$ possible cases each with equal probability.
 
     However, we have $$365 - (365 - k + 1) + 1 = k$$ days and $$n$$ people to choose from. Therefore, there are $$nk \cdot (365 - nk - 1)_{n - 1}$$ cases in total.
 
