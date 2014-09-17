@@ -3,7 +3,7 @@ layout: post
 title: General Birthday Problem
 modified: null
 categories: null
-excerpt: General Birthday Problem
+excerpt: Discuss the classic birthday problem generally.
 tags: 
   - CS 70
 image: 

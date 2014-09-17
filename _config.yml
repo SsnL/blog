@@ -29,7 +29,7 @@ kramdown:
 owner:
   name: Tongzhou Wang
   avatar: https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xaf1/v/t1.0-9/10428426_628465577250802_6105297792920881814_n.jpg?oh=df37fd52b7e960da8cc0cd10f706e706&oe=54C579A4&__gda__=1419175957_32613f2dae512be9faa88c8de9d2afd0
-  bio: "Undergraduate studying computer science and statistics at UC Berkeley"
+  bio: "Undergraduate studying computer science, statistics and philosophy at UC Berkeley"
   email:
   disqus-shortname: ssnl
   twitter:
@@ -41,9 +41,9 @@ owner:
     ad-client:
     ad-slot:
   bing-verify:
-  github: http://github.com/SsnL
+  github: SsnL
   stackoverflow: #http://stackoverflow.com/users/123456/username
-  linkedin: https://www.linkedin.com/pub/tongzhou-wang/91/523/438
+  linkedin: tongzhouwang
   instagram: #username
   lastfm: #username
   tumblr: #username
