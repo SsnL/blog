@@ -28,9 +28,9 @@ kramdown:
 # Site owner
 owner:
   name: Tongzhou Wang
-  avatar: https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xaf1/v/t1.0-9/10428426_628465577250802_6105297792920881814_n.jpg?oh=df37fd52b7e960da8cc0cd10f706e706&oe=54C579A4&__gda__=1419175957_32613f2dae512be9faa88c8de9d2afd0
+  avatar: avatar.jpg
   bio: "Undergraduate studying computer science, statistics and philosophy at UC Berkeley"
-  email:
+  email: tongzhou.wang.1994@gmail.com
   disqus-shortname: ssnl
   twitter:
   facebook: #username
