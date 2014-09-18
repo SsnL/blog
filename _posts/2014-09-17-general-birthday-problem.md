@@ -4,9 +4,10 @@ title: General Birthday Problem
 modified: null
 categories: null
 excerpt: Discuss the classic birthday problem generally.
-tags: 
+comments: true
+tags:
   - CS 70
-image: 
+image:
   feature: null
 date: 2014-09-17T10:32:56-07:00
 published: true
@@ -14,17 +15,17 @@ published: true
 
 ## Problem:
 
-Assume that everyone's birthday is uniformly distributed in 365 days of a year. What is the probability that no two people have birthdays with difference less than or equal to $$k$$ days among $$n$$ people? 
+Assume that everyone's birthday is uniformly distributed in 365 days of a year. What is the probability that no two people have birthdays with difference less than or equal to $$k$$ days among $$n$$ people?
 
 ## Solution:
 
-If $$n(k + 1) > 365$$, the probability is clearly 0. 
+If $$n(k + 1) > 365$$, the probability is clearly 0.
 
 $$
 \mathbb{P} = 0
 $$
-        
-If $$k = 0$$, the problem degenerates into the classic birthday problem. The solution is as follows. 
+
+If $$k = 0$$, the problem degenerates into the classic birthday problem. The solution is as follows.
 
 $$
 \mathbb{P} = \frac{365!}{365^n \cdot (365 - k + 1)!}
@@ -38,15 +39,15 @@ Otherwise, we number the 365 days as $$d_i$$, $$i \in \{1, \cdots, 365\}$$ and d
 
     We have $$n! {365 - nk \choose n} = (365 - nk)_n$$ possible cases each with equal probability.
 
-+ Someone is born during $$\{d_{365 - k + 1}, \cdots, d_{365}\}$$. 
++ Someone is born during $$\{d_{365 - k + 1}, \cdots, d_{365}\}$$.
 
-    Apparently, no two people can both have birthdays in that range. Therefore, the problem becomes how to put $n - 1$ people's birthdays in the rest $$365 - k - 1$$ days. 
+    Apparently, no two people can both have birthdays in that range. Therefore, the problem becomes how to put $n - 1$ people's birthdays in the rest $$365 - k - 1$$ days.
 
     Notice that this situation is different with the situation in the problem where the 365 days form a cycle. So, using the method in the first case, We have $$(n - 1)! {365 - k - 1 - (n - 1)k \choose n - 1} = (365 - nk - 1)_{n - 1}$$ possible cases each with equal probability.
 
     However, we have $$365 - (365 - k + 1) + 1 = k$$ days and $$n$$ people to choose from. Therefore, there are $$nk \cdot (365 - nk - 1)_{n - 1}$$ cases in total.
 
-Each case is of probability $$\frac{1}{365^n}$$. So the probability that no two people have birthdays with difference less than or equal to $$k$$ days among $$n$$ people is 
+Each case is of probability $$\frac{1}{365^n}$$. So the probability that no two people have birthdays with difference less than or equal to $$k$$ days among $$n$$ people is
 
 $$
 \mathbb{P} = \frac{(365 - nk)_n + nk \cdot (365 - nk - 1)_{n - 1}}{365^n}
@@ -87,9 +88,9 @@ By inspecting the formula, we find out that it also works for the first two case
         result = sum(replicate(times, experiment(n, k))) / times
         prob = (choose(365 - n * k, n) + k * choose(365 - n * k - 1, n - 1)) * factorial(n)/(365^n)
         print(sprintf("experiment: %f, probability: %f", result, prob))
-    }    
+    }
 
-## Sample output: 
+## Sample output:
 
     > run(100000, 15, 3)
     [1] "experiment: 0.112590, probability: 0.113578"
