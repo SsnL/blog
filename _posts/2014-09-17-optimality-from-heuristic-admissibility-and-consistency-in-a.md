@@ -13,9 +13,7 @@ date: 2014-09-17T11:33:29-07:00
 
 Consider the function $$f$$ used as priority key in A* algorithm.
 
-$$
-f() = w() + h()
-$$
+$$f() = w() + h()$$
 
 # Admissible $$h$$
 

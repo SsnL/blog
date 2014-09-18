@@ -21,15 +21,11 @@ Assume that everyone's birthday is uniformly distributed in 365 days of a year. 
 
 If $$n(k + 1) > 365$$, the probability is clearly 0.
 
-$$
-\mathbb{P} = 0
-$$
+$$\mathbb{P} = 0$$
 
 If $$k = 0$$, the problem degenerates into the classic birthday problem. The solution is as follows.
 
-$$
-\mathbb{P} = \frac{365!}{365^n \cdot (365 - k + 1)!}
-$$
+$$\mathbb{P} = \frac{365!}{365^n \cdot (365 - k + 1)!}$$
 
 Otherwise, we number the 365 days as $$d_i$$, $$i \in \{1, \cdots, 365\}$$ and divide the problem into two cases:
 
@@ -49,9 +45,7 @@ Otherwise, we number the 365 days as $$d_i$$, $$i \in \{1, \cdots, 365\}$$ and d
 
 Each case is of probability $$\frac{1}{365^n}$$. So the probability that no two people have birthdays with difference less than or equal to $$k$$ days among $$n$$ people is
 
-$$
-\mathbb{P} = \frac{(365 - nk)_n + nk \cdot (365 - nk - 1)_{n - 1}}{365^n}
-$$
+$$\mathbb{P} = \frac{(365 - nk)_n + nk \cdot (365 - nk - 1)_{n - 1}}{365^n}$$
 
 By inspecting the formula, we find out that it also works for the first two cases. Therefore, this formula give correct answer for all cases.
 
