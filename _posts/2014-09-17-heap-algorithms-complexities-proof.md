@@ -19,7 +19,7 @@ Assuming subtrees of node $$n$$ are max heaps.
 
 It can be easily derived that
 
-+ Number of levels below and including $$n$$: $$L = 1 + \lceil \lg{\frac{N}{i}} \rceil = \lceil \lg{N} - \lg{i} \rceil + 1$$
++ Number of levels below $$n$$: $$L = \lceil \lg{\frac{N}{i}} \rceil = \lceil \lg{N} - \lg{i} \rceil$$
 
 Let $$T_{Heapify}(L)$$ be the time complexity. We have the simple recurrence relation:
 
@@ -40,8 +40,10 @@ Without loss of generality, assume $$N$$ is a power of 2. Let $$T(N)$$ be the ti
 
 Pseudocode (note that here the heap starts from index 1):
 
-    for i = N/2 downto 1
+{% highlight python %}
+    for i in range(N/2, 1):
         Heapify(A, i)
+{% endhighlight %}
 
 $$
 \begin{array} {lcl}
