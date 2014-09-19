@@ -44,7 +44,7 @@ The part that perplexed me the most is,
     for each s in successors do
         s.f <- max(s.g + s.h, node.f)
 
-If we visit `node` in `RBFS(p_node)`, it is probable that `RBFS(node)` returns `failure, new_f`. Then the `f`s of `p_node.successors` changed order, and in the next iteration, i.e., in the next recursive call of `RBFS`, we might have a different `min(f_limit, alternative)`. Thus, continuing to do so, it could visit `node` twice in `RBFS(p_node)`.
+If we visit `node` in `RBFS(p_node)`, it is probable that `RBFS(node)` returns `failure, new_f`. Then the `f`s of `p_node.successors` will change their order, and in the next iteration, i.e., in the next recursive call of `RBFS`, we might have a different `min(f_limit, alternative)`. Thus, continuing to do so, it could visit `node` twice in `RBFS(p_node)`.
 
 If it has already expanded `node` and got `failure, node.f = new_f`, we know that from `node`, it will reach a "barrier", a frontier of at least `f = node.f`. Then each children, `child_node` of `node`, will meet a frontier of at least `f = node.f` as well. If `child_node` has `child_node.g + child_node.h` less than `new_f`, it is underestimating. The algorithm can safely replace its `f` with `node.f`.
 
