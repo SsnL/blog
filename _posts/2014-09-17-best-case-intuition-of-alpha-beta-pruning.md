@@ -4,6 +4,7 @@ title: "Best-Case Intuition of Alpha-Beta Pruning"
 modified:
 categories:
 excerpt: Intuitive explanation of the square root branching factor
+comments: true
 tags: [CS 188]
 image:
   feature:
