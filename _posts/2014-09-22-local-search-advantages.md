@@ -4,7 +4,7 @@ title: "Local Search Advantages"
 modified:
 categories: 
 comments: true
-excerpt:
+excerpt: Comparing local search algorithms with path-constructing algorithms
 tags: []
 image:
   feature:
