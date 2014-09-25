@@ -11,8 +11,6 @@ image:
 date: 2014-09-24T13:54:49-07:00
 ---
 
-# The Ember.js Run Loop
-
 ## Introduction
 
 Ember.js is an ambitious Javascript MVC framework. It not only provides a clear way to build a web application using router, controller and view. but also utilizes a clever structure, the run loop, to schedule the jobs in an Ember application so as to avoid unnecessary computations.
