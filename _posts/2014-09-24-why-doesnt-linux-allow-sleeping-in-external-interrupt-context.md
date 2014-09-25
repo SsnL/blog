@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Why Doesn't Linux Allow Sleeping in External Interrupt Context"
-modified: Thoughts on Linux threads implementation.
+modified: 
 categories: 
 comments: true
-excerpt:
+excerpt: Thoughts on Linux threads implementation.
 tags: []
 image:
   feature:
