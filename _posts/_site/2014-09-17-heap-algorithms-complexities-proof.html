@@ -1,0 +1,68 @@
+<h2 id="heapifyarray-a-with-size-n-index-i-that-contains-node-n">Heapify(array <script type="math/tex">A</script> with size <script type="math/tex">N</script>, index <script type="math/tex">i</script> that contains node <script type="math/tex">n</script>):</h2>
+
+<p>Assuming subtrees of node <script type="math/tex">n</script> are max heaps.</p>
+
+<ul>
+  <li>Idea: correcting one violation of heap invariant at <script type="math/tex">n</script>. Swap <script type="math/tex">n</script> with one of its child and recursively call Heapify on that child.</li>
+</ul>
+
+<p>It can be easily derived that</p>
+
+<ul>
+  <li>Number of levels below <script type="math/tex">n</script>: <script type="math/tex">L = \lceil \lg{\frac{N}{i}} \rceil = \lceil \lg{N} - \lg{i} \rceil</script></li>
+</ul>
+
+<p>Let <script type="math/tex">T_{Heapify}(L)</script> be the time complexity. We have the simple recurrence relation:</p>
+
+<script type="math/tex; mode=display">
+\begin{cases}
+    T_{Heapify}(L) = T_{Heapify}(L - 1) + O(1) \\
+    T_{Heapify}(0) = 0
+\end{cases}
+</script>
+
+<p>Therefore, <script type="math/tex">T_{Heapify}(N, i) \in O(\lg{N} - \lg{i})</script></p>
+
+<h2 id="buildmaxheaparray-a-with-size-n">Build_max_heap(Array <script type="math/tex">A</script> with size <script type="math/tex">N</script>):</h2>
+
+<ul>
+  <li>Idea: the second half of a heap is consisted of leaves. So constructing a heap is calling Heapify from bottom to top on all of the nodes.</li>
+</ul>
+
+<p>Without loss of generality, assume <script type="math/tex">N</script> is a power of 2. Let <script type="math/tex">T(N)</script> be the time complexity.</p>
+
+<p>Pseudocode (note that here the heap starts from index 1):</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">Heapify</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span></code></pre></div>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+\begin{array} {lcl}
+T_{Build\_heap}(N) & = & \sum_{i = 1}^{\frac{N}{2}} T_{Heapify}(N, i) \\
+                   & = & \sum_{i = 1}^{\frac{N}{2}} O(\lg{N} - \lg{i}) \\
+                   & = & O(\lg{N}) + \sum_{i = 2}^{\frac{N}{2}} O(\lg{N} - \lg{i}) \\
+                   & \leqslant & O(\lg{N} + \int_{1}^{\frac{N}{2}} (\lg{N} - \lg{x}) dx) \\
+                   & \leqslant & O(\lg{N} + (\frac{N}{2} - 1) \lg{N} - (\frac{N}{2} \lg{\frac{N}{2}} - \frac{N}{2}) + (\lg{1} - 1)) \\
+                   & \in & O(N)
+\end{array}
+ %]]></script>
+
+<h2 id="heapsortarray-a-with-size-n">Heap_sort(Array <script type="math/tex">A</script> with size <script type="math/tex">N</script>):</h2>
+
+<ul>
+  <li>Idea: after popping out the first (max or min) element, move one of the leaves to <script type="math/tex">A[1]</script> and call Heapify(<script type="math/tex">A</script>, <script type="math/tex">1</script>). Continue to do so and get a sorted list.</li>
+</ul>
+
+<p>Let <script type="math/tex">T(N)</script> be the time complexity.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+\begin{array} {lcl}
+T_{Heap\_sort}(N) & = & \sum_{i = 2}^{N - 1} T_{Heapify}(i, 1) \\
+                  & = & \sum_{i = 2}^{N - 1} O(\lg{i}) \\
+                  & \leqslant & O(\int_{2}^{N} \lg{x} dx) \\
+                  & \leqslant & O(N \lg{N} - N - (2 \lg{2} - 2)) \\
+                  & \in & O(N \lg{N})
+\end{array}
+ %]]></script>

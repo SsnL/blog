@@ -1,0 +1,40 @@
+<p>The idea of recursive best first search is to simulate A* search with <script type="math/tex">O(bd)</script> memory, where <script type="math/tex">b</script> is the branching factor and <script type="math/tex">d</script> is the solution depth. <code>g</code> is cost so far and <code>h</code> is the heuristic. The algorithm is reproduced below:</p>
+
+<pre><code>function RECURSIVE-BEST-FIRST-SEARCH(problem) returns a solution, or failure
+    return RBFS(problem, MAKE-NODE(problem.INITIAL-STATE), INFINITY)
+
+function RBFS(problem, node, f_limit) returns a solution, or failure and a new f-cost limit
+    if problem.GOAL-TEST(node.STATE) then
+        return SOLUTION(node)
+    successors &lt;- [ ]
+    for each action in problem.ACTIONS(node.STATE) do
+        add CHILD-NODE(problem,node,action) into successors
+    if successors is empty then
+        return failure, INFINITY
+    /* update f with value from previous search, if any */
+    for each s in successors do
+        s.f &lt;- max(s.g + s.h, node.f))
+    loop do
+        best &lt;- the lowest f-value node in successors
+        if best.f &gt; f_limit then
+            return failure, best.f
+        alternative &lt;- the second-lowest f-value among successors
+        result, best.f &lt;- RBFS(problem, best, min(f_limit, alternative))
+        if result != failure then
+            return result
+</code></pre>
+
+<p>Think of <code>node.f</code> as the best <code>bot_node.g + bot_node.h</code> where <code>bot_node</code> is a node from the bottom layer in the subtree from <code>node</code>.</p>
+
+<p>The part that perplexed me the most is,</p>
+
+<pre><code>/* update f with value from previous search, if any */
+for each s in successors do
+    s.f &lt;- max(s.g + s.h, node.f)
+</code></pre>
+
+<p>If we visit <code>node</code> in <code>RBFS(p_node)</code>, it is probable that <code>RBFS(node)</code> returns <code>failure, new_f</code>. Then the <code>f</code>s of <code>p_node.successors</code> will change their order, and in the next iteration, i.e., in the next recursive call of <code>RBFS</code>, we might have a different <code>min(f_limit, alternative)</code>. Thus, continuing to do so, it could visit <code>node</code> twice in <code>RBFS(p_node)</code>.</p>
+
+<p>If it has already expanded <code>node</code> and got <code>failure, node.f = new_f</code>, we know that from <code>node</code>, it will reach a “barrier”, a frontier of at least <code>f = node.f</code>. Then each children, <code>child_node</code> of <code>node</code>, will meet a frontier of at least <code>f = node.f</code> as well. If <code>child_node</code> has <code>child_node.g + child_node.h</code> less than <code>new_f</code>, it is underestimating. The algorithm can safely replace its <code>f</code> with <code>node.f</code>.</p>
+
+<p>With consistent heuristic, the instruction is perfectly fine sine each path has non-decreasing f-values and thus <code>child_node.f</code> won’t be replaced by <code>node.f</code> in first <code>RBFS(node)</code>. Problem is, with inconsistent heuristic, sometimes when <code>node</code> is expanded at the first time, <code>node.f = f.g + f.h</code> isn’t a value from frontier, moreover, it didn’t even reach its successors. Then the <code>max</code> action makes <code>child_node</code> get a higher <code>f</code>. Therefore, the algorithm doesn’t necessarily behave like naive A* search and expand the node with least <code>g + h</code>.</p>

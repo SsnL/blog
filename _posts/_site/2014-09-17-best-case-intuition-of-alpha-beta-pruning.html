@@ -1,0 +1,36 @@
+<p>By <strong>best-case</strong>, it means that, when choosing a node to expand, the algorithm always chooses in the optimal order. i.e.</p>
+
+<ul>
+  <li>order that returned scores rank from greatest to least for max nodes</li>
+  <li>order that returned scores rank from least to greatest for min nodes</li>
+</ul>
+
+<p>Let the branching factor be <script type="math/tex">b</script> and solution depth be <script type="math/tex">m</script>.</p>
+
+<p>Before diving into explanation, we should first establish one crucial observation and review the pruning condition:</p>
+
+<ul>
+  <li><strong>Crucial observation:</strong> if a node, among a group of nodes, is chosen first to be searched, it is the one that will be returned to the upper level.</li>
+  <li><strong>Pruning condition:</strong> at any time, <script type="math/tex">\alpha \geqslant \beta</script>.</li>
+</ul>
+
+<ol>
+  <li>The algorithm will first expand the solution with optimal score, <script type="math/tex">v</script>, for current player. Without loss of generality, assume that current player is a max player.
+    <ul>
+      <li><strong>Note:</strong> The algorithm doesn’t know that the optimal solution has found.</li>
+      <li>All max nodes first chosen to expand should return scores less than <script type="math/tex">v</script>, otherwise <script type="math/tex">v</script> wouldn’t be the optimal (since all that min nodes actually do is returning these scores).</li>
+      <li>All min nodes first chosen to expand also have this property for the same reason.
+        <ul>
+          <li>Actually all min nodes meet this condition because otherwise its parent max node will return a value greater than <script type="math/tex">v</script>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Then, divide into two cases:
+    <ul>
+      <li>for each max node, every child has to be searched (since no score greater than <script type="math/tex">v</script> can be found and thus no pruning condition is met).</li>
+      <li>for each min node, after it get the first returned score from its child max node, it should immediately prune its other children because pruning condition is met.</li>
+    </ul>
+  </li>
+  <li>Expanding <script type="math/tex">b</script> nodes every two levels leads to a <script type="math/tex">\sqrt{b}</script> branching factor.</li>
+</ol>

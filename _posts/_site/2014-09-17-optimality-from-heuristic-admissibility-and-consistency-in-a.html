@@ -1,0 +1,60 @@
+<p>Consider the function <script type="math/tex">f</script> used as priority key in A* algorithm.</p>
+
+<script type="math/tex; mode=display">f() = w() + h()</script>
+
+<h1 id="admissible-h">Admissible <script type="math/tex">h</script></h1>
+
+<ul>
+  <li>Guarantees optimality if before adding a node <script type="math/tex">n</script> to fringe,
+    <ul>
+      <li>Check if <script type="math/tex">n</script> is traversed.
+        <ul>
+          <li>If so, check if current path is better than the one traversed
+            <ul>
+              <li>If so, add to fringe</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Check if <script type="math/tex">n</script> is in fringe.
+        <ul>
+          <li>If so, check if current path is better than the one in fringe
+            <ul>
+              <li>If so, add to fringe</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Add <script type="math/tex">n</script> to fringe</li>
+    </ul>
+  </li>
+  <li>
+    <p>Proof:</p>
+
+    <p>Algorithm terminates when the vertex with minimum <script type="math/tex">f</script> is the destination, <script type="math/tex">dest</script>.</p>
+
+    <p>If the algorithm terminates with admissible heuristic but the optimal path hasn’t been found, we must have , for some <script type="math/tex">v</script> on the output path, <script type="math/tex">% <![CDATA[
+w(v) + h(v) < f(dest) = w(dest) %]]></script>.</p>
+
+    <p>But <script type="math/tex">\textit{optimal_dist}(dest) \leqslant w(v) + \textit{optimal_dist}(v, dest)</script>. Then <script type="math/tex">h(v) > \textit{optimal_dist}(v, dest)</script>. Contradiction with the definition of admissibility. QED.</p>
+  </li>
+  <li>The above algorithm resembles tree search.</li>
+</ul>
+
+<h1 id="consistent-h">Consistent <script type="math/tex">h</script></h1>
+
+<ul>
+  <li>
+    <p>Implies non-decreasing <script type="math/tex">f</script> on every path.</p>
+  </li>
+  <li>
+    <p>Guarantees optimality by ensuring, whenever a node <script type="math/tex">n</script> is popped out of the fringe, it is from the shortest path to it.</p>
+  </li>
+  <li>Thus, new node can be ignored if it was traversed.
+    <ul>
+      <li>Cannot ignore if it is in the fringe and to be traversed.</li>
+      <li>In the above case, replace the one in the fringe if current path is better. i.e. lower <script type="math/tex">f</script>.</li>
+    </ul>
+  </li>
+  <li>The above algorithm is graph search.</li>
+</ul>

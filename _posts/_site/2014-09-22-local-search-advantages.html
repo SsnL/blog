@@ -1,0 +1,26 @@
+<p>In searching algorithms, local search is a class of algorithms that propose a solution and continue modifying it until it looks good enough. Although being not always optimal (mostly due to local optimum and randomness), these algorithms possess several advantages over other path-constructing algorithms, such as A*, breadth-first, IDA, etc.</p>
+
+<p>By its nature of randomness, local search reduces complexity at the cost of possible suboptimal solutions. Local search is good for:</p>
+
+<ol>
+  <li>problems with memory constraints,
+    <ul>
+      <li>Local search algorithms keep only one current state in memory (or a fixed number of states, if using algorithms like local beam search and genetic algorithm)</li>
+      <li>However, path-constructing algorithms usually take exponential order of memory for large search trees.</li>
+    </ul>
+  </li>
+  <li>approximations to computationally difficult problems, including NP-hard ones,
+    <ul>
+      <li>NP-hard problems cannot be easily solved. But approximation is possible in polynomial time.</li>
+    </ul>
+  </li>
+  <li>problems with changes in state space, for instance, online search,
+    <ul>
+      <li>Online search refers to searching dynamically. In other words, the agent is searching in an evolving environment.</li>
+      <li>If, for instance, A* is adopted, by the time it gives out a solution for a particular state, environment has already changed to a state where the solution can not apply.</li>
+      <li>However, local search algorithms can continuously modify its solution according to the changing environment as they run.</li>
+      <li>One other advantage of local search is that once a search is complete, the algorithm can still be invoked at a later time when the environment has changed so as to optimize the previous solution in the new setting. Apparently, this is not possible for path-constructing algorithms.</li>
+      <li>Problems which we only care about results rather than process.</li>
+    </ul>
+  </li>
+</ol>

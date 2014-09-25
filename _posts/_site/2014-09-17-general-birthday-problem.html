@@ -1,0 +1,93 @@
+<h2 id="problem">Problem:</h2>
+
+<p>Assume that everyone’s birthday is uniformly distributed in 365 days of a year. What is the probability that no two people have birthdays with difference less than or equal to <script type="math/tex">k</script> days among <script type="math/tex">n</script> people?</p>
+
+<h2 id="solution">Solution:</h2>
+
+<p>If <script type="math/tex">n(k + 1) > 365</script>, the probability is clearly 0.</p>
+
+<script type="math/tex; mode=display">\mathbb{P} = 0</script>
+
+<p>If <script type="math/tex">k = 0</script>, the problem degenerates into the classic birthday problem. The solution is as follows.</p>
+
+<script type="math/tex; mode=display">\mathbb{P} = \frac{365!}{365^n \cdot (365 - k + 1)!}</script>
+
+<p>Otherwise, we number the 365 days as <script type="math/tex">d_i</script>, <script type="math/tex">i \in \{1, \cdots, 365\}</script> and divide the problem into two cases:</p>
+
+<ul>
+  <li>
+    <p>No one is born during <script type="math/tex">\{d_{365-k+1}, \cdots, d_{365}\}</script>.</p>
+
+    <p>Let the $n$ people be <script type="math/tex">P_i</script>, <script type="math/tex">i \in \{1, \cdots, n\}</script>. Then we combine each <script type="math/tex">P_i</script>’s  birthday with the <script type="math/tex">k</script> days right after it. Then we have <script type="math/tex">n</script> combined elements and <script type="math/tex">365 - n(k + 1)</script> days. The problem transforms into picking $n$ days from a row of <script type="math/tex">365 - nk</script> days and replacing them with our <script type="math/tex">n</script> combined elements.</p>
+
+    <p>We have <script type="math/tex">n! {365 - nk \choose n} = (365 - nk)_n</script> possible cases each with equal probability.</p>
+  </li>
+  <li>
+    <p>Someone is born during <script type="math/tex">\{d_{365 - k + 1}, \cdots, d_{365}\}</script>.</p>
+
+    <p>Apparently, no two people can both have birthdays in that range. Therefore, the problem becomes how to put $n - 1$ people’s birthdays in the rest <script type="math/tex">365 - k - 1</script> days.</p>
+
+    <p>Notice that this situation is different with the situation in the problem where the 365 days form a cycle. So, using the method in the first case, We have <script type="math/tex">(n - 1)! {365 - k - 1 - (n - 1)k \choose n - 1} = (365 - nk - 1)_{n - 1}</script> possible cases each with equal probability.</p>
+
+    <p>However, we have <script type="math/tex">365 - (365 - k + 1) + 1 = k</script> days and <script type="math/tex">n</script> people to choose from. Therefore, there are <script type="math/tex">nk \cdot (365 - nk - 1)_{n - 1}</script> cases in total.</p>
+  </li>
+</ul>
+
+<p>Each case is of probability <script type="math/tex">\frac{1}{365^n}</script>. So the probability that no two people have birthdays with difference less than or equal to <script type="math/tex">k</script> days among <script type="math/tex">n</script> people is</p>
+
+<script type="math/tex; mode=display">\mathbb{P} = \frac{(365 - nk)_n + nk \cdot (365 - nk - 1)_{n - 1}}{365^n}</script>
+
+<p>By inspecting the formula, we find out that it also works for the first two cases. Therefore, this formula give correct answer for all cases.</p>
+
+<h2 id="r-test-code">R test code:</h2>
+
+<pre><code>experiment = function (n, k) {
+    days = sample(365, n, replace = T)
+    if (k == 0) {
+        return(!any(duplicated(days)))
+    }
+    dict = rep(-1, 365 %/% k + 1)
+    if (365 %% k != 0) {
+        offset = k - 365 %% k
+    } else {
+        offset = 0
+    }
+    for (day in days) {
+        div = day %/% k + 1
+        rem = day %% k
+        if ((dict[div] &gt;= 0) ||
+            (((div + 1) &lt; 365 %/% k + 2) &amp;&amp; (dict[div + 1] &gt; -1) &amp;&amp; (dict[div + 1] &lt;= rem)) ||
+            ((div == 365 %/% k + 1) &amp;&amp; (dict[1] &gt; -1) &amp;&amp; (dict[1] - offset &lt;= rem)) ||
+            ((div &gt; 1) &amp;&amp; (dict[div - 1] &gt;= rem)) ||
+            ((div == 1) &amp;&amp; (dict[365 %/% k + 1] &gt; -1) &amp;&amp; (dict[365 %/% k + 1] + offset &gt;= rem))) {
+            return(F)
+        }
+        dict[div] = rem
+    }
+    return(T)
+}
+
+run = function(times, n, k) {
+    result = sum(replicate(times, experiment(n, k))) / times
+    prob = (choose(365 - n * k, n) + k * choose(365 - n * k - 1, n - 1)) * factorial(n)/(365^n)
+    print(sprintf("experiment: %f, probability: %f", result, prob))
+}
+</code></pre>
+
+<h2 id="sample-output">Sample output:</h2>
+
+<pre><code>&gt; run(100000, 15, 3)
+[1] "experiment: 0.112590, probability: 0.113578"
+&gt; run(100000, 15, 3)
+[1] "experiment: 0.113670, probability: 0.113578"
+&gt; run(100000, 15, 32)
+[1] "experiment: 0.000000, probability: 0.000000"
+&gt; run(100000, 1, 32)
+[1] "experiment: 1.000000, probability: 1.000000"
+&gt; run(100000, 15, 0)
+[1] "experiment: 0.746700, probability: 0.747099"
+&gt; run(100000, 15, 1)
+[1] "experiment: 0.406600, probability: 0.409946"
+&gt; run(100000, 15, 1)
+[1] "experiment: 0.409680, probability: 0.409946"
+</code></pre>
