@@ -3,7 +3,7 @@ layout: post
 title: General Birthday Problem
 modified: null
 categories: null
-excerpt: Discuss the classic birthday problem generally.
+excerpt: Discuss the classic birthday problem generally
 comments: true
 tags:
   - CS 70
@@ -52,51 +52,55 @@ By inspecting the formula, we find out that it also works for the first two case
 
 ## R test code:
 
-    experiment = function (n, k) {
-        days = sample(365, n, replace = T)
-        if (k == 0) {
-            return(!any(duplicated(days)))
-        }
-        dict = rep(-1, 365 %/% k + 1)
-        if (365 %% k != 0) {
-            offset = k - 365 %% k
-        } else {
-            offset = 0
-        }
-        for (day in days) {
-            div = day %/% k + 1
-            rem = day %% k
-            if ((dict[div] >= 0) ||
-                (((div + 1) < 365 %/% k + 2) && (dict[div + 1] > -1) && (dict[div + 1] <= rem)) ||
-                ((div == 365 %/% k + 1) && (dict[1] > -1) && (dict[1] - offset <= rem)) ||
-                ((div > 1) && (dict[div - 1] >= rem)) ||
-                ((div == 1) && (dict[365 %/% k + 1] > -1) && (dict[365 %/% k + 1] + offset >= rem))) {
-                return(F)
-            }
-            dict[div] = rem
-        }
-        return(T)
+{% highlight R %}
+experiment = function (n, k) {
+    days = sample(365, n, replace = T)
+    if (k == 0) {
+        return(!any(duplicated(days)))
     }
+    dict = rep(-1, 365 %/% k + 1)
+    if (365 %% k != 0) {
+        offset = k - 365 %% k
+    } else {
+        offset = 0
+    }
+    for (day in days) {
+        div = day %/% k + 1
+        rem = day %% k
+        if ((dict[div] >= 0) ||
+            (((div + 1) < 365 %/% k + 2) && (dict[div + 1] > -1) && (dict[div + 1] <= rem)) ||
+            ((div == 365 %/% k + 1) && (dict[1] > -1) && (dict[1] - offset <= rem)) ||
+            ((div > 1) && (dict[div - 1] >= rem)) ||
+            ((div == 1) && (dict[365 %/% k + 1] > -1) && (dict[365 %/% k + 1] + offset >= rem))) {
+            return(F)
+        }
+        dict[div] = rem
+    }
+    return(T)
+}
 
-    run = function(times, n, k) {
-        result = sum(replicate(times, experiment(n, k))) / times
-        prob = (choose(365 - n * k, n) + k * choose(365 - n * k - 1, n - 1)) * factorial(n)/(365^n)
-        print(sprintf("experiment: %f, probability: %f", result, prob))
-    }
+run = function(times, n, k) {
+    result = sum(replicate(times, experiment(n, k))) / times
+    prob = (choose(365 - n * k, n) + k * choose(365 - n * k - 1, n - 1)) * factorial(n)/(365^n)
+    print(sprintf("experiment: %f, probability: %f", result, prob))
+}
+{% endhighlight %}
 
 ## Sample output:
 
-    > run(100000, 15, 3)
-    [1] "experiment: 0.112590, probability: 0.113578"
-    > run(100000, 15, 3)
-    [1] "experiment: 0.113670, probability: 0.113578"
-    > run(100000, 15, 32)
-    [1] "experiment: 0.000000, probability: 0.000000"
-    > run(100000, 1, 32)
-    [1] "experiment: 1.000000, probability: 1.000000"
-    > run(100000, 15, 0)
-    [1] "experiment: 0.746700, probability: 0.747099"
-    > run(100000, 15, 1)
-    [1] "experiment: 0.406600, probability: 0.409946"
-    > run(100000, 15, 1)
-    [1] "experiment: 0.409680, probability: 0.409946"
+{% highlight R %}
+> run(100000, 15, 3)
+[1] "experiment: 0.112590, probability: 0.113578"
+> run(100000, 15, 3)
+[1] "experiment: 0.113670, probability: 0.113578"
+> run(100000, 15, 32)
+[1] "experiment: 0.000000, probability: 0.000000"
+> run(100000, 1, 32)
+[1] "experiment: 1.000000, probability: 1.000000"
+> run(100000, 15, 0)
+[1] "experiment: 0.746700, probability: 0.747099"
+> run(100000, 15, 1)
+[1] "experiment: 0.406600, probability: 0.409946"
+> run(100000, 15, 1)
+[1] "experiment: 0.409680, probability: 0.409946"
+{% endhighlight %}

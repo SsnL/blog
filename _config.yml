@@ -1,21 +1,67 @@
-# Site wide configuration
-
 title:            Simon's Scratch Book
-locale:           en_US
+description:
+disqus_shortname: ssnl
+reading_time:     true
+words_per_minute: 160
+#Your site's domain goes here. Leave localhost server or blank when working locally.
 url:              http://ssnl.github.io
 # url:              http://localhost:4000
 
+# Owner/author information
+owner:
+  name: Tongzhou Wang
+  avatar: avatar.jpg
+  bio: "Studying computer science, statistics and philosophy at UC Berkeley"
+  email: tongzhou.wang.1994@gmail.com
+  # Social networking links used in footer. Update and remove as you like.
+  twitter:
+  facebook:
+  github: SsnL
+  stackexchange:
+  linkedin: tongzhouwang
+  instagram:
+  flickr:
+  tumblr:
+  # For Google Authorship https://plus.google.com/authorship
+  # google plus id, include the '+', eg +mmistakes
+  google_plus:    #+yourid
 
-# Jekyll configuration
+# Background image to be tiled on all pages
+background:
 
-permalink:   /:categories/:title/
-markdown:    kramdown
+image:
+  feature: maze-of-ith.png
+  credit: Yeong-Hao Han
+  creditlink: http://archive.wizards.com/magic/magazine/article.aspx?x=mtg/daily/activity/1048
+
+# Analytics and webmaster tools stuff goes here
+google_analytics:
+google_verify:
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+bing_verify:
+
+# Links to include in top navigation
+# For external links add external: true
+# links:
+#   - title: Theme Setup
+#     url: /theme-setup
+#   - title: External Link
+#     url: http://mademistakes.com
+#     external: true
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    America/Los_Angeles
+future:      true
 highlighter: pygments
-sass:
-  sass_dir: _sass
-  style: compressed
-gems:
-  - jekyll-sitemap
+markdown:    kramdown
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:categories/:title/
+
+# Amount of post to show on home page
+paginate: 5
 
 kramdown:
   auto_ids: true
@@ -25,32 +71,13 @@ kramdown:
   use_coderay: false
   smart_quotes: lsquo,rsquo,ldquo,rdquo
 
-# Site owner
-owner:
-  name: Tongzhou Wang
-  avatar: avatar.jpg
-  bio: "Undergraduate studying computer science, statistics and philosophy at UC Berkeley"
-  email: tongzhou.wang.1994@gmail.com
-  disqus-shortname: ssnl
-  twitter:
-  facebook: #username
-  google:
-    plus: #username
-    analytics:
-    verify:
-    ad-client:
-    ad-slot:
-  bing-verify:
-  github: SsnL
-  stackoverflow: #http://stackoverflow.com/users/123456/username
-  linkedin: tongzhouwang
-  instagram: #username
-  lastfm: #username
-  tumblr: #username
-  pinterest: #username
-  foursquare: #username
-  steam: #username
-  dribbble: #username
+  coderay:
+    coderay_wrap:              div
+    coderay_line_numbers:      inline
+    coderay_line_number_start: 1
+    coderay_tab_width:         4
+    coderay_bold_every:        10
+    coderay_css:               style
 
 include: [".htaccess"]
-exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md"]
+exclude: ["lib", "config.rb", "Capfile", "config", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]

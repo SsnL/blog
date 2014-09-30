@@ -3,7 +3,7 @@ layout: post
 title: "Proof of Heap Algorithms Complexities"
 modified:
 categories:
-excerpt: Mathematical proof of algorithms including heapify, heap construction and heap sort.
+excerpt: Mathematical proof of algorithms including heapify, heap construction and heap sort
 comments: true
 tags: []
 image:
@@ -40,9 +40,9 @@ Without loss of generality, assume $$N$$ is a power of 2. Let $$T(N)$$ be the ti
 
 Pseudocode (note that here the heap starts from index 1):
 
-{% highlight python %}
-    for i in range(N/2, 1):
-        Heapify(A, i)
+{% highlight python linenos=table lineanchors %}
+for i in range(N/2, 1):
+    Heapify(A, i)
 {% endhighlight %}
 
 $$

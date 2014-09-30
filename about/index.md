@@ -10,11 +10,14 @@ image:
   creditlink: http://texturelovers.com
 ---
 
-I am a second-year undergraduate student at the great University of California at Berkeley. I enjoy my majors, computer science and statistics, as well as my intended minor, philosophy. My fields of interests are:
+Hello there!
+
+I am Simon, a second-year undergraduate student at the great UC Berkeley. I enjoy my majors, computer science and statistics, as well as my intended minor, philosophy. My fields of interests are:
 
 + Artificial intelligence
 + Machine learning
 + Algorithms
++ Natural language processing
 + Computer vision
 + Information theory
 + Computation theory

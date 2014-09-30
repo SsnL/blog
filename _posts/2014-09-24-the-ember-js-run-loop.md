@@ -2,9 +2,9 @@
 layout: post
 title: "The Ember.js Run Loop"
 modified:
-categories: 
+categories:
 comments: true
-excerpt: Explore into Ember.js Run Loop Implementation
+excerpt: Explore into Ember.js Run Loop implementation
 tags: [Ember.js]
 image:
   feature:
@@ -70,42 +70,52 @@ To illustrate this, let me use an example from [the official website](http://emb
 
 We have an object, `User`,
 
-	var User = Ember.Object.extend({
-	  firstName: null,
-	  lastName: null,
-	  fullName: function() {
-	    return this.get('firstName') + ' ' + this.get('lastName');
-	  }.property('firstName', 'lastName')
-	});
+{% highlight javascript %}
+var User = Ember.Object.extend({
+  firstName: null,
+  lastName: null,
+  fullName: function() {
+    return this.get('firstName') + ' ' + this.get('lastName');
+  }.property('firstName', 'lastName')
+});
+{% endhighlight %}
 
 a simple template,
 
-    {{firstName}}
-    {{fullName}}
+{% highlight javascript %}
+{{firstName}}
+{{fullName}}
+{% endhighlight %}
 
 and a few Javascript code.
 
-    var user = User.create({firstName:'Tom', lastName:'Huda'});
-    user.set('firstName', 'Yehuda');
-    user.set('lastName', 'Katz');
+{% highlight javascript %}
+var user = User.create({firstName:'Tom', lastName:'Huda'});
+user.set('firstName', 'Yehuda');
+user.set('lastName', 'Katz');
+{% endhighlight %}
 
 Without the run loop, the above code should ask the browser to render the template three times:
 
-    var user = User.create({firstName:'Tom', lastName:'Huda'});
-    // object created, first render
+{% highlight javascript %}
+var user = User.create({firstName:'Tom', lastName:'Huda'});
+// object created, first render
 
-    user.set('firstName', 'Yehuda');
-    // attributes updated, second render, {{firstName}} and {{fullName}} are updated
+user.set('firstName', 'Yehuda');
+// attributes updated, second render, {{firstName}} and {{fullName}} are updated
 
-    user.set('lastName', 'Katz');
-    // attributes updated, third render, {{lastName}} and {{fullName}} are updated
+user.set('lastName', 'Katz');
+// attributes updated, third render, {{lastName}} and {{fullName}} are updated
+{% endhighlight %}
 
 But with the run loop, the rendering jobs in the `render` queue won't be executed before all the above code is done:
 
-    var user = User.create({firstName:'Tom', lastName:'Huda'});
-    user.set('firstName', 'Yehuda');
-    user.set('lastName', 'Katz');
-    // first render, {{firstName}} and {{fullName}} are updated
+{% highlight javascript %}
+var user = User.create({firstName:'Tom', lastName:'Huda'});
+user.set('firstName', 'Yehuda');
+user.set('lastName', 'Katz');
+// first render, {{firstName}} and {{fullName}} are updated
+{% endhighlight %}
 
 ## Implementation
 
@@ -128,90 +138,94 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      function onBegin(current) {
-        run.currentRunLoop = current;
-      }
+{% highlight javascript %}
+function onBegin(current) {
+  run.currentRunLoop = current;
+}
 
-      function onEnd(current, next) {
-        run.currentRunLoop = next;
-      }
+function onEnd(current, next) {
+  run.currentRunLoop = next;
+}
 
-      var Backburner = requireModule('backburner').Backburner;
-      var backburner = new Backburner(['sync', 'actions', 'destroy'], {
-        sync: {
-          before: beginPropertyChanges,
-          after: endPropertyChanges
-        },
-        defaultQueue: 'actions',
-        onBegin: onBegin,
-        onEnd: onEnd,
-        onErrorTarget: Ember,
-        onErrorMethod: 'onerror'
-      });
+var Backburner = requireModule('backburner').Backburner;
+var backburner = new Backburner(['sync', 'actions', 'destroy'], {
+  sync: {
+    before: beginPropertyChanges,
+    after: endPropertyChanges
+  },
+  defaultQueue: 'actions',
+  onBegin: onBegin,
+  onEnd: onEnd,
+  onErrorTarget: Ember,
+  onErrorMethod: 'onerror'
+});
+{% endhighlight %}
 
   ---
 
   `backburner.js`
 
-      function Backburner(queueNames, options) {
-        this.queueNames = queueNames;
-        this.options = options || {};
-        if (!this.options.defaultQueue) {
-          this.options.defaultQueue = queueNames[0];
+{% highlight javascript %}
+function Backburner(queueNames, options) {
+  this.queueNames = queueNames;
+  this.options = options || {};
+  if (!this.options.defaultQueue) {
+    this.options.defaultQueue = queueNames[0];
+  }
+  this.instanceStack = [];
+  this._debouncees = [];
+  this._throttlers = [];
+}
+
+Backburner.prototype = {
+  queueNames: null,
+  options: null,
+  currentInstance: null,
+  instanceStack: null,
+  begin: function() {
+    var options = this.options,
+        onBegin = options && options.onBegin,
+        previousInstance = this.currentInstance;
+
+    if (previousInstance) {
+      this.instanceStack.push(previousInstance);
+    }
+
+    this.currentInstance = new DeferredActionQueues(this.queueNames, options);
+    if (onBegin) {
+      onBegin(this.currentInstance, previousInstance);
+    }
+  },
+
+  end: function() {
+    var options = this.options,
+        onEnd = options && options.onEnd,
+        currentInstance = this.currentInstance,
+        nextInstance = null;
+
+    var finallyAlreadyCalled = false;
+    try {
+      currentInstance.flush();
+    } finally {
+      if (!finallyAlreadyCalled) {
+        finallyAlreadyCalled = true;
+
+        this.currentInstance = null;
+
+        if (this.instanceStack.length) {
+          nextInstance = this.instanceStack.pop();
+          this.currentInstance = nextInstance;
         }
-        this.instanceStack = [];
-        this._debouncees = [];
-        this._throttlers = [];
+
+        if (onEnd) {
+          onEnd(currentInstance, nextInstance);
+        }
       }
-
-      Backburner.prototype = {
-        queueNames: null,
-        options: null,
-        currentInstance: null,
-        instanceStack: null,
-        begin: function() {
-          var options = this.options,
-              onBegin = options && options.onBegin,
-              previousInstance = this.currentInstance;
-
-          if (previousInstance) {
-            this.instanceStack.push(previousInstance);
-          }
-
-          this.currentInstance = new DeferredActionQueues(this.queueNames, options);
-          if (onBegin) {
-            onBegin(this.currentInstance, previousInstance);
-          }
-        },
-
-        end: function() {
-          var options = this.options,
-              onEnd = options && options.onEnd,
-              currentInstance = this.currentInstance,
-              nextInstance = null;
-
-          var finallyAlreadyCalled = false;
-          try {
-            currentInstance.flush();
-          } finally {
-            if (!finallyAlreadyCalled) {
-              finallyAlreadyCalled = true;
-
-              this.currentInstance = null;
-
-              if (this.instanceStack.length) {
-                nextInstance = this.instanceStack.pop();
-                this.currentInstance = nextInstance;
-              }
-
-              if (onEnd) {
-                onEnd(currentInstance, nextInstance);
-              }
-            }
-          }
-        },
-        ... // Other methods will be discussed later
-      };
+    }
+  },
+  ... // Other methods will be discussed later
+};
+{% endhighlight %}
 
   In `backburner.begin` and `backburner.end`, we can see that `instanceStack` is used as a stack of run loops. Together with the `onBegin` and `onEnd` functions provided in `run_loop.js`, it is able to handle run loops that are invoked during the execution of another run loop.
 
@@ -221,113 +235,119 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      function run() {
-        return apply(backburner, backburner.run, arguments);
-      }
+{% highlight javascript %}
+function run() {
+  return apply(backburner, backburner.run, arguments);
+}
+{% endhighlight %}
+
+  ---
 
   `backburner.js`
 
-      Backburner.prototype = {
-        run: function(target, method /*, args */) {
-          var onError = getOnError(this.options);
+{% highlight javascript %}
+Backburner.prototype = {
+  run: function(target, method /*, args */) {
+    var onError = getOnError(this.options);
 
-          this.begin();
+    this.begin();
 
-          if (!method) {
-            method = target;
-            target = null;
-          }
+    if (!method) {
+      method = target;
+      target = null;
+    }
 
-          if (isString(method)) {
-            method = target[method];
-          }
+    if (isString(method)) {
+      method = target[method];
+    }
 
-          var args = slice.call(arguments, 2);
+    var args = slice.call(arguments, 2);
 
-          // guard against Safari 6's double-finally bug
-          var didFinally = false;
+    // guard against Safari 6's double-finally bug
+    var didFinally = false;
 
-          if (onError) {
-            try {
-              return method.apply(target, args);
-            } catch(error) {
-              onError(error);
-            } finally {
-              if (!didFinally) {
-                didFinally = true;
-                this.end();
-              }
-            }
-          } else {
-            try {
-              return method.apply(target, args);
-            } finally {
-              if (!didFinally) {
-                didFinally = true;
-                this.end();
-              }
-            }
-          }
-        },
-        ...
-      };
+    if (onError) {
+      try {
+        return method.apply(target, args);
+      } catch(error) {
+        onError(error);
+      } finally {
+        if (!didFinally) {
+          didFinally = true;
+          this.end();
+        }
+      }
+    } else {
+      try {
+        return method.apply(target, args);
+      } finally {
+        if (!didFinally) {
+          didFinally = true;
+          this.end();
+        }
+      }
+    }
+  },
+  ...
+};
 
-      ...
+...
 
-      DeferredActionQueues.prototype = {
-        flush: function() {
-          var queues = this.queues,
-              queueNames = this.queueNames,
-              queueName, queue, queueItems, priorQueueNameIndex,
-              queueNameIndex = 0, numberOfQueues = queueNames.length,
-              options = this.options,
-              onError = options.onError || (options.onErrorTarget && options.onErrorTarget[options.onErrorMethod]),
-              invoke = onError ? this.invokeWithOnError : this.invoke;
+DeferredActionQueues.prototype = {
+  flush: function() {
+    var queues = this.queues,
+        queueNames = this.queueNames,
+        queueName, queue, queueItems, priorQueueNameIndex,
+        queueNameIndex = 0, numberOfQueues = queueNames.length,
+        options = this.options,
+        onError = options.onError || (options.onErrorTarget && options.onErrorTarget[options.onErrorMethod]),
+        invoke = onError ? this.invokeWithOnError : this.invoke;
 
-          outerloop:
-          while (queueNameIndex < numberOfQueues) {
-            queueName = queueNames[queueNameIndex];
-            queue = queues[queueName];
-            queueItems = queue._queueBeingFlushed = queue._queue.slice();
-            queue._queue = [];
+    outerloop:
+    while (queueNameIndex < numberOfQueues) {
+      queueName = queueNames[queueNameIndex];
+      queue = queues[queueName];
+      queueItems = queue._queueBeingFlushed = queue._queue.slice();
+      queue._queue = [];
 
-            var queueOptions = queue.options, // TODO: write a test for this
-                before = queueOptions && queueOptions.before,
-                after = queueOptions && queueOptions.after,
-                target, method, args, stack,
-                queueIndex = 0, numberOfQueueItems = queueItems.length;
+      var queueOptions = queue.options, // TODO: write a test for this
+          before = queueOptions && queueOptions.before,
+          after = queueOptions && queueOptions.after,
+          target, method, args, stack,
+          queueIndex = 0, numberOfQueueItems = queueItems.length;
 
-            if (numberOfQueueItems && before) { before(); }
+      if (numberOfQueueItems && before) { before(); }
 
-            while (queueIndex < numberOfQueueItems) {
-              target = queueItems[queueIndex];
-              method = queueItems[queueIndex+1];
-              args   = queueItems[queueIndex+2];
-              stack  = queueItems[queueIndex+3]; // Debugging assistance
+      while (queueIndex < numberOfQueueItems) {
+        target = queueItems[queueIndex];
+        method = queueItems[queueIndex+1];
+        args   = queueItems[queueIndex+2];
+        stack  = queueItems[queueIndex+3]; // Debugging assistance
 
-              if (isString(method)) { method = target[method]; }
+        if (isString(method)) { method = target[method]; }
 
-              // method could have been nullified / canceled during flush
-              if (method) {
-                invoke(target, method, args, onError);
-              }
+        // method could have been nullified / canceled during flush
+        if (method) {
+          invoke(target, method, args, onError);
+        }
 
-              queueIndex += 4;
-            }
+        queueIndex += 4;
+      }
 
-            queue._queueBeingFlushed = null;
-            if (numberOfQueueItems && after) { after(); }
+      queue._queueBeingFlushed = null;
+      if (numberOfQueueItems && after) { after(); }
 
-            if ((priorQueueNameIndex = indexOfPriorQueueWithActions(this, queueNameIndex)) !== -1) {
-              queueNameIndex = priorQueueNameIndex;
-              continue outerloop;
-            }
+      if ((priorQueueNameIndex = indexOfPriorQueueWithActions(this, queueNameIndex)) !== -1) {
+        queueNameIndex = priorQueueNameIndex;
+        continue outerloop;
+      }
 
-            queueNameIndex++;
-          }
-        },
-        ...
-      };
+      queueNameIndex++;
+    }
+  },
+  ...
+};
+{% endhighlight %}
 
   Asks `backburner` to initiate a new run loop to run the job in arguments. It wraps the execution in `begin` and `end` calls so that the `flush` call ensures that bindings are updated and events are responded.
 
@@ -335,15 +355,17 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.join = function(target, method /* args */) {
-        if (!run.currentRunLoop) {
-          return apply(Ember, run, arguments);
-        }
+{% highlight javascript %}
+run.join = function(target, method /* args */) {
+  if (!run.currentRunLoop) {
+    return apply(Ember, run, arguments);
+  }
 
-        var args = slice.call(arguments);
-        args.unshift('actions');
-        apply(run, run.schedule, args);
-      };
+  var args = slice.call(arguments);
+  args.unshift('actions');
+  apply(run, run.schedule, args);
+};
+{% endhighlight %}
 
   Works almost the same as `Ember.run`. However, if there already exists a run loop, instead of initiating a new one, `Ember.run.join` will schedule the job into the existing run loop in the `actions` queue.
 
@@ -351,12 +373,14 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.bind = function(target, method /* args*/) {
-        var args = slice.call(arguments);
-        return function() {
-          return apply(run, run.join, args.concat(slice.call(arguments)));
-        };
-      };
+{% highlight javascript %}
+run.bind = function(target, method /* args*/) {
+  var args = slice.call(arguments);
+  return function() {
+    return apply(run, run.join, args.concat(slice.call(arguments)));
+  };
+};
+{% endhighlight %}
 
    Provides a callback method for third party modules to use.
 
@@ -364,13 +388,15 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.begin = function() {
-        backburner.begin();
-      };
+{% highlight javascript %}
+run.begin = function() {
+  backburner.begin();
+};
 
-      run.end = function() {
-        backburner.end();
-      };
+run.end = function() {
+  backburner.end();
+};
+{% endhighlight %}
 
   Directly asks backburner to start or end the current run loop.
 
@@ -378,88 +404,94 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.schedule = function(queue, target, method) {
-        checkAutoRun();
-        apply(backburner, backburner.schedule, arguments);
-      };
+{% highlight javascript %}
+run.schedule = function(queue, target, method) {
+  checkAutoRun();
+  apply(backburner, backburner.schedule, arguments);
+};
 
-      run.scheduleOnce = function(queue, target, method) {
-        checkAutoRun();
-        return apply(backburner, backburner.scheduleOnce, arguments);
-      };
+run.scheduleOnce = function(queue, target, method) {
+  checkAutoRun();
+  return apply(backburner, backburner.scheduleOnce, arguments);
+};
 
-      run.once = function(target, method) {
-        checkAutoRun();
-        var args = slice.call(arguments);
-        args.unshift('actions');
-        return apply(backburner, backburner.scheduleOnce, args);
-      };
+run.once = function(target, method) {
+  checkAutoRun();
+  var args = slice.call(arguments);
+  args.unshift('actions');
+  return apply(backburner, backburner.scheduleOnce, args);
+};
+{% endhighlight %}
+
+  ---
 
   `backburner.js`
 
-      Backburner.prototype = {
-        defer: function(queueName, target, method /* , args */) {
-          if (!method) {
-            method = target;
-            target = null;
-          }
+{% highlight javascript %}
+Backburner.prototype = {
+  defer: function(queueName, target, method /* , args */) {
+    if (!method) {
+      method = target;
+      target = null;
+    }
 
-          if (isString(method)) {
-            method = target[method];
-          }
+    if (isString(method)) {
+      method = target[method];
+    }
 
-          var stack = this.DEBUG ? new Error() : undefined,
-              args = arguments.length > 3 ? slice.call(arguments, 3) : undefined;
-          if (!this.currentInstance) { createAutorun(this); }
-          return this.currentInstance.schedule(queueName, target, method, args, false, stack);
-        },
+    var stack = this.DEBUG ? new Error() : undefined,
+        args = arguments.length > 3 ? slice.call(arguments, 3) : undefined;
+    if (!this.currentInstance) { createAutorun(this); }
+    return this.currentInstance.schedule(queueName, target, method, args, false, stack);
+  },
 
-        deferOnce: function(queueName, target, method /* , args */) {
-          if (!method) {
-            method = target;
-            target = null;
-          }
+  deferOnce: function(queueName, target, method /* , args */) {
+    if (!method) {
+      method = target;
+      target = null;
+    }
 
-          if (isString(method)) {
-            method = target[method];
-          }
+    if (isString(method)) {
+      method = target[method];
+    }
 
-          var stack = this.DEBUG ? new Error() : undefined,
-              args = arguments.length > 3 ? slice.call(arguments, 3) : undefined;
-          if (!this.currentInstance) { createAutorun(this); }
-          return this.currentInstance.schedule(queueName, target, method, args, true, stack);
-        },
-        ...
-      };
+    var stack = this.DEBUG ? new Error() : undefined,
+        args = arguments.length > 3 ? slice.call(arguments, 3) : undefined;
+    if (!this.currentInstance) { createAutorun(this); }
+    return this.currentInstance.schedule(queueName, target, method, args, true, stack);
+  },
+  ...
+};
 
-      Backburner.prototype.schedule = Backburner.prototype.defer;
-      Backburner.prototype.scheduleOnce = Backburner.prototype.deferOnce;
+Backburner.prototype.schedule = Backburner.prototype.defer;
+Backburner.prototype.scheduleOnce = Backburner.prototype.deferOnce;
 
-      function createAutorun(backburner) {
-        backburner.begin();
-        backburner._autorun = global.setTimeout(function() {
-          backburner._autorun = null;
-          backburner.end();
-        });
-      }
+function createAutorun(backburner) {
+  backburner.begin();
+  backburner._autorun = global.setTimeout(function() {
+    backburner._autorun = null;
+    backburner.end();
+  });
+}
 
-      ...
+...
 
-      DeferredActionQueues.prototype = {
-        schedule: function(queueName, target, method, args, onceFlag, stack) {
-          var queues = this.queues,
-              queue = queues[queueName];
+DeferredActionQueues.prototype = {
+  schedule: function(queueName, target, method, args, onceFlag, stack) {
+    var queues = this.queues,
+        queue = queues[queueName];
 
-          if (!queue) { throw new Error("You attempted to schedule an action in a queue (" + queueName + ") that doesn't exist"); }
+    if (!queue) { throw new Error("You attempted to schedule an action in a queue (" + queueName + ") that doesn't exist"); }
 
-          if (onceFlag) {
-            return queue.pushUnique(target, method, args, stack);
-          } else {
-            return queue.push(target, method, args, stack);
-          }
-        },
-        ...
-      };
+    if (onceFlag) {
+      return queue.pushUnique(target, method, args, stack);
+    } else {
+      return queue.push(target, method, args, stack);
+    }
+  },
+  ...
+};
+{% endhighlight %}
 
   All these three methods schedule jobs to the current run loop. The different is that `scheduleOnce` ensures that the job is only executed once and that `once` is the convenient method for `scheduleOnce` on the `actions` queue. All of them invoke `backburner.schedule`, which asks the current run loop, `currentInstance` to push the job into corresponding queue.
 
@@ -467,211 +499,217 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.later = function(target, method) {
-        return apply(backburner, backburner.later, arguments);
-      };
+{% highlight javascript %}
+run.later = function(target, method) {
+  return apply(backburner, backburner.later, arguments);
+};
 
-      run.next = function() {
-        var args = slice.call(arguments);
-        args.push(1);
-        return apply(backburner, backburner.later, args);
-      };
+run.next = function() {
+  var args = slice.call(arguments);
+  args.push(1);
+  return apply(backburner, backburner.later, args);
+};
 
-      run.hasScheduledTimers = function() {
-        return backburner.hasTimers();
-      };
+run.hasScheduledTimers = function() {
+  return backburner.hasTimers();
+};
 
-      run.cancel = function(timer) {
-        return backburner.cancel(timer);
-      };
+run.cancel = function(timer) {
+  return backburner.cancel(timer);
+};
 
-      run.cancelTimers = function () {
-        backburner.cancelTimers();
-      };
+run.cancelTimers = function () {
+  backburner.cancelTimers();
+};
+{% endhighlight %}
+
+  ---
 
   `backburner.js`
 
-      DeferredActionQueues.prototype = {
-        setTimeout: function() {
-          var args = slice.call(arguments),
-              length = args.length,
-              method, wait, target,
-              methodOrTarget, methodOrWait, methodOrArgs;
+{% highlight javascript %}
+DeferredActionQueues.prototype = {
+  setTimeout: function() {
+    var args = slice.call(arguments),
+        length = args.length,
+        method, wait, target,
+        methodOrTarget, methodOrWait, methodOrArgs;
 
-          if (length === 0) {
-            return;
-          } else if (length === 1) {
-            method = args.shift();
-            wait = 0;
-          } else if (length === 2) {
-            methodOrTarget = args[0];
-            methodOrWait = args[1];
+    if (length === 0) {
+      return;
+    } else if (length === 1) {
+      method = args.shift();
+      wait = 0;
+    } else if (length === 2) {
+      methodOrTarget = args[0];
+      methodOrWait = args[1];
 
-            if (isFunction(methodOrWait) || isFunction(methodOrTarget[methodOrWait])) {
-              target = args.shift();
-              method = args.shift();
-              wait = 0;
-            } else if (isCoercableNumber(methodOrWait)) {
-              method = args.shift();
-              wait = args.shift();
-            } else {
-              method = args.shift();
-              wait =  0;
-            }
-          } else {
-            var last = args[args.length - 1];
+      if (isFunction(methodOrWait) || isFunction(methodOrTarget[methodOrWait])) {
+        target = args.shift();
+        method = args.shift();
+        wait = 0;
+      } else if (isCoercableNumber(methodOrWait)) {
+        method = args.shift();
+        wait = args.shift();
+      } else {
+        method = args.shift();
+        wait =  0;
+      }
+    } else {
+      var last = args[args.length - 1];
 
-            if (isCoercableNumber(last)) {
-              wait = args.pop();
-            } else {
-              wait = 0;
-            }
-
-            methodOrTarget = args[0];
-            methodOrArgs = args[1];
-
-            if (isFunction(methodOrArgs) || (isString(methodOrArgs) &&
-                                            methodOrTarget !== null &&
-                                            methodOrArgs in methodOrTarget)) {
-              target = args.shift();
-              method = args.shift();
-            } else {
-              method = args.shift();
-            }
-          }
-
-          var executeAt = (+new Date()) + parseInt(wait, 10);
-
-          if (isString(method)) {
-            method = target[method];
-          }
-
-          var onError = getOnError(this.options);
-
-          function fn() {
-            if (onError) {
-              try {
-                method.apply(target, args);
-              } catch (e) {
-                onError(e);
-              }
-            } else {
-              method.apply(target, args);
-            }
-          }
-
-          // find position to insert
-          var i = searchTimer(executeAt, timers);
-
-          timers.splice(i, 0, executeAt, fn);
-
-          updateLaterTimer(this, executeAt, wait);
-
-          return fn;
-        },
-
-        cancelTimers: function() {
-          var clearItems = function(item) {
-            clearTimeout(item[2]);
-          };
-
-          each(this._throttlers, clearItems);
-          this._throttlers = [];
-
-          each(this._debouncees, clearItems);
-          this._debouncees = [];
-
-          if (this._laterTimer) {
-            clearTimeout(this._laterTimer);
-            this._laterTimer = null;
-          }
-          timers = [];
-
-          if (this._autorun) {
-            clearTimeout(this._autorun);
-            this._autorun = null;
-          }
-        },
-
-        hasTimers: function() {
-          return !!timers.length || !!this._debouncees.length || !!this._throttlers.length || this._autorun;
-        },
-
-        cancel: function(timer) {
-          var timerType = typeof timer;
-
-          if (timer && timerType === 'object' && timer.queue && timer.method) { // we're cancelling a deferOnce
-            return timer.queue.cancel(timer);
-          } else if (timerType === 'function') { // we're cancelling a setTimeout
-            for (var i = 0, l = timers.length; i < l; i += 2) {
-              if (timers[i + 1] === timer) {
-                timers.splice(i, 2); // remove the two elements
-                return true;
-              }
-            }
-          } else if (Object.prototype.toString.call(timer) === "[object Array]"){ // we're cancelling a throttle or debounce
-            return this._cancelItem(findThrottler, this._throttlers, timer) ||
-                     this._cancelItem(findDebouncee, this._debouncees, timer);
-          } else {
-            return; // timer was null or not a timer
-          }
-        },
-        ...
-      };
-
-      function updateLaterTimer(self, executeAt, wait) {
-        if (!self._laterTimer || executeAt < self._laterTimerExpiresAt) {
-          self._laterTimer = global.setTimeout(function() {
-            self._laterTimer = null;
-            self._laterTimerExpiresAt = null;
-            executeTimers(self);
-          }, wait);
-          self._laterTimerExpiresAt = executeAt;
-        }
+      if (isCoercableNumber(last)) {
+        wait = args.pop();
+      } else {
+        wait = 0;
       }
 
-      function executeTimers(self) {
-        var now = +new Date(),
-            time, fns, i, l;
+      methodOrTarget = args[0];
+      methodOrArgs = args[1];
 
-        self.run(function() {
-          i = searchTimer(now, timers);
+      if (isFunction(methodOrArgs) || (isString(methodOrArgs) &&
+                                      methodOrTarget !== null &&
+                                      methodOrArgs in methodOrTarget)) {
+        target = args.shift();
+        method = args.shift();
+      } else {
+        method = args.shift();
+      }
+    }
 
-          fns = timers.splice(0, i);
+    var executeAt = (+new Date()) + parseInt(wait, 10);
 
-          for (i = 1, l = fns.length; i < l; i += 2) {
-            self.schedule(self.options.defaultQueue, null, fns[i]);
-          }
-        });
+    if (isString(method)) {
+      method = target[method];
+    }
 
-        if (timers.length) {
-          updateLaterTimer(self, timers[0], timers[0] - now);
+    var onError = getOnError(this.options);
+
+    function fn() {
+      if (onError) {
+        try {
+          method.apply(target, args);
+        } catch (e) {
+          onError(e);
+        }
+      } else {
+        method.apply(target, args);
+      }
+    }
+
+    // find position to insert
+    var i = searchTimer(executeAt, timers);
+
+    timers.splice(i, 0, executeAt, fn);
+
+    updateLaterTimer(this, executeAt, wait);
+
+    return fn;
+  },
+
+  cancelTimers: function() {
+    var clearItems = function(item) {
+      clearTimeout(item[2]);
+    };
+
+    each(this._throttlers, clearItems);
+    this._throttlers = [];
+
+    each(this._debouncees, clearItems);
+    this._debouncees = [];
+
+    if (this._laterTimer) {
+      clearTimeout(this._laterTimer);
+      this._laterTimer = null;
+    }
+    timers = [];
+
+    if (this._autorun) {
+      clearTimeout(this._autorun);
+      this._autorun = null;
+    }
+  },
+
+  hasTimers: function() {
+    return !!timers.length || !!this._debouncees.length || !!this._throttlers.length || this._autorun;
+  },
+
+  cancel: function(timer) {
+    var timerType = typeof timer;
+
+    if (timer && timerType === 'object' && timer.queue && timer.method) { // we're cancelling a deferOnce
+      return timer.queue.cancel(timer);
+    } else if (timerType === 'function') { // we're cancelling a setTimeout
+      for (var i = 0, l = timers.length; i < l; i += 2) {
+        if (timers[i + 1] === timer) {
+          timers.splice(i, 2); // remove the two elements
+          return true;
         }
       }
+    } else if (Object.prototype.toString.call(timer) === "[object Array]"){ // we're cancelling a throttle or debounce
+      return this._cancelItem(findThrottler, this._throttlers, timer) ||
+               this._cancelItem(findDebouncee, this._debouncees, timer);
+    } else {
+      return; // timer was null or not a timer
+    }
+  },
+  ...
+};
 
-      function searchTimer(time, timers) {
-        var start = 0,
-            end = timers.length - 2,
-            middle, l;
+function updateLaterTimer(self, executeAt, wait) {
+  if (!self._laterTimer || executeAt < self._laterTimerExpiresAt) {
+    self._laterTimer = global.setTimeout(function() {
+      self._laterTimer = null;
+      self._laterTimerExpiresAt = null;
+      executeTimers(self);
+    }, wait);
+    self._laterTimerExpiresAt = executeAt;
+  }
+}
 
-        while (start < end) {
-          // since timers is an array of pairs 'l' will always
-          // be an integer
-          l = (end - start) / 2;
+function executeTimers(self) {
+  var now = +new Date(),
+      time, fns, i, l;
 
-          // compensate for the index in case even number
-          // of pairs inside timers
-          middle = start + l - (l % 2);
+  self.run(function() {
+    i = searchTimer(now, timers);
 
-          if (time >= timers[middle]) {
-            start = middle + 2;
-          } else {
-            end = middle;
-          }
-        }
+    fns = timers.splice(0, i);
 
-        return (time >= timers[start]) ? start + 2 : start;
-      }
+    for (i = 1, l = fns.length; i < l; i += 2) {
+      self.schedule(self.options.defaultQueue, null, fns[i]);
+    }
+  });
+
+  if (timers.length) {
+    updateLaterTimer(self, timers[0], timers[0] - now);
+  }
+}
+
+function searchTimer(time, timers) {
+  var start = 0,
+      end = timers.length - 2,
+      middle, l;
+
+  while (start < end) {
+    // since timers is an array of pairs 'l' will always
+    // be an integer
+    l = (end - start) / 2;
+
+    // compensate for the index in case even number
+    // of pairs inside timers
+    middle = start + l - (l % 2);
+
+    if (time >= timers[middle]) {
+      start = middle + 2;
+    } else {
+      end = middle;
+    }
+  }
+
+  return (time >= timers[start]) ? start + 2 : start;
+}
+{% endhighlight %}
 
   This set of functions, together with `Ember.run.throttle` and `Ember.run.debounce` below enables developers to schedule delayed jobs. These functions maintain an array, `timers`, to handle the delayed jobs. `timers` is an array of `(executeAt, fn)` pairs.
 
@@ -692,67 +730,73 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.sync = function() {
-        if (backburner.currentInstance) {
-          backburner.currentInstance.queues.sync.flush();
-        }
-      };
+{% highlight javascript %}
+run.sync = function() {
+  if (backburner.currentInstance) {
+    backburner.currentInstance.queues.sync.flush();
+  }
+};
+{% endhighlight %}
+
+  ---
 
   `backburner.js`
 
-      Queue.prototype = {
-        // TODO: remove me, only being used for Ember.run.sync
-        flush: function() {
-          var queue = this._queue,
-              globalOptions = this.globalOptions,
-              options = this.options,
-              before = options && options.before,
-              after = options && options.after,
-              onError = globalOptions.onError || (globalOptions.onErrorTarget && globalOptions.onErrorTarget[globalOptions.onErrorMethod]),
-              target, method, args, stack, i, l = queue.length;
+{% highlight javascript %}
+Queue.prototype = {
+  // TODO: remove me, only being used for Ember.run.sync
+  flush: function() {
+    var queue = this._queue,
+        globalOptions = this.globalOptions,
+        options = this.options,
+        before = options && options.before,
+        after = options && options.after,
+        onError = globalOptions.onError || (globalOptions.onErrorTarget && globalOptions.onErrorTarget[globalOptions.onErrorMethod]),
+        target, method, args, stack, i, l = queue.length;
 
-          if (l && before) { before(); }
-          for (i = 0; i < l; i += 4) {
-            target = queue[i];
-            method = queue[i+1];
-            args   = queue[i+2];
-            stack  = queue[i+3]; // Debugging assistance
+    if (l && before) { before(); }
+    for (i = 0; i < l; i += 4) {
+      target = queue[i];
+      method = queue[i+1];
+      args   = queue[i+2];
+      stack  = queue[i+3]; // Debugging assistance
 
-            // TODO: error handling
-            if (args && args.length > 0) {
-              if (onError) {
-                try {
-                  method.apply(target, args);
-                } catch (e) {
-                  onError(e);
-                }
-              } else {
-                method.apply(target, args);
-              }
-            } else {
-              if (onError) {
-                try {
-                  method.call(target);
-                } catch(e) {
-                  onError(e);
-                }
-              } else {
-                method.call(target);
-              }
-            }
+      // TODO: error handling
+      if (args && args.length > 0) {
+        if (onError) {
+          try {
+            method.apply(target, args);
+          } catch (e) {
+            onError(e);
           }
-          if (l && after) { after(); }
-
-          // check if new items have been added
-          if (queue.length > l) {
-            this._queue = queue.slice(l);
-            this.flush();
-          } else {
-            this._queue.length = 0;
+        } else {
+          method.apply(target, args);
+        }
+      } else {
+        if (onError) {
+          try {
+            method.call(target);
+          } catch(e) {
+            onError(e);
           }
-        },
-        ...
-      };
+        } else {
+          method.call(target);
+        }
+      }
+    }
+    if (l && after) { after(); }
+
+    // check if new items have been added
+    if (queue.length > l) {
+      this._queue = queue.slice(l);
+      this.flush();
+    } else {
+      this._queue.length = 0;
+    }
+  },
+  ...
+};
+{% endhighlight %}
 
   `Ember.run.sync` is actually the only method that uses `flush` on a specific queue. The Ember developer team is trying to figure out a way to replace it with other functions. Nevertheless, it is still helpful since there indeed are places we need to synchronize the bindings.
 
@@ -760,107 +804,113 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run.debounce = function() {
-        return apply(backburner, backburner.debounce, arguments);
-      };
+{% highlight javascript %}
+run.debounce = function() {
+  return apply(backburner, backburner.debounce, arguments);
+};
 
-      run.throttle = function() {
-        return apply(backburner, backburner.throttle, arguments);
-      };
+run.throttle = function() {
+  return apply(backburner, backburner.throttle, arguments);
+};
+{% endhighlight %}
+
+  ---
 
   `backburner.js`
 
-      Queue.prototype = {
-        debounce: function(target, method /* , args, wait, [immediate] */) {
-          var self = this,
-              args = arguments,
-              immediate = pop.call(args),
-              wait,
-              index,
-              debouncee,
-              timer;
+{% highlight javascript %}
+Queue.prototype = {
+  debounce: function(target, method /* , args, wait, [immediate] */) {
+    var self = this,
+        args = arguments,
+        immediate = pop.call(args),
+        wait,
+        index,
+        debouncee,
+        timer;
 
-          if (isNumber(immediate) || isString(immediate)) {
-            wait = immediate;
-            immediate = false;
-          } else {
-            wait = pop.call(args);
-          }
+    if (isNumber(immediate) || isString(immediate)) {
+      wait = immediate;
+      immediate = false;
+    } else {
+      wait = pop.call(args);
+    }
 
-          wait = parseInt(wait, 10);
-          // Remove debouncee
-          index = findDebouncee(target, method, this._debouncees);
+    wait = parseInt(wait, 10);
+    // Remove debouncee
+    index = findDebouncee(target, method, this._debouncees);
 
-          if (index > -1) {
-            debouncee = this._debouncees[index];
-            this._debouncees.splice(index, 1);
-            clearTimeout(debouncee[2]);
-          }
+    if (index > -1) {
+      debouncee = this._debouncees[index];
+      this._debouncees.splice(index, 1);
+      clearTimeout(debouncee[2]);
+    }
 
-          timer = global.setTimeout(function() {
-            if (!immediate) {
-              self.run.apply(self, args);
-            }
-            var index = findDebouncee(target, method, self._debouncees);
-            if (index > -1) {
-              self._debouncees.splice(index, 1);
-            }
-          }, wait);
+    timer = global.setTimeout(function() {
+      if (!immediate) {
+        self.run.apply(self, args);
+      }
+      var index = findDebouncee(target, method, self._debouncees);
+      if (index > -1) {
+        self._debouncees.splice(index, 1);
+      }
+    }, wait);
 
-          if (immediate && index === -1) {
-            self.run.apply(self, args);
-          }
+    if (immediate && index === -1) {
+      self.run.apply(self, args);
+    }
 
-          debouncee = [target, method, timer];
+    debouncee = [target, method, timer];
 
-          self._debouncees.push(debouncee);
+    self._debouncees.push(debouncee);
 
-          return debouncee;
-        },
+    return debouncee;
+  },
 
-        throttle: function(target, method /* , args, wait, [immediate] */) {
-          var self = this,
-              args = arguments,
-              immediate = pop.call(args),
-              wait,
-              throttler,
-              index,
-              timer;
+  throttle: function(target, method /* , args, wait, [immediate] */) {
+    var self = this,
+        args = arguments,
+        immediate = pop.call(args),
+        wait,
+        throttler,
+        index,
+        timer;
 
-          if (isNumber(immediate) || isString(immediate)) {
-            wait = immediate;
-            immediate = true;
-          } else {
-            wait = pop.call(args);
-          }
+    if (isNumber(immediate) || isString(immediate)) {
+      wait = immediate;
+      immediate = true;
+    } else {
+      wait = pop.call(args);
+    }
 
-          wait = parseInt(wait, 10);
+    wait = parseInt(wait, 10);
 
-          index = findThrottler(target, method, this._throttlers);
-          if (index > -1) { return this._throttlers[index]; } // throttled
+    index = findThrottler(target, method, this._throttlers);
+    if (index > -1) { return this._throttlers[index]; } // throttled
 
-          timer = global.setTimeout(function() {
-            if (!immediate) {
-              self.run.apply(self, args);
-            }
-            var index = findThrottler(target, method, self._throttlers);
-            if (index > -1) {
-              self._throttlers.splice(index, 1);
-            }
-          }, wait);
+    timer = global.setTimeout(function() {
+      if (!immediate) {
+        self.run.apply(self, args);
+      }
+      var index = findThrottler(target, method, self._throttlers);
+      if (index > -1) {
+        self._throttlers.splice(index, 1);
+      }
+    }, wait);
 
-          if (immediate) {
-            self.run.apply(self, args);
-          }
+    if (immediate) {
+      self.run.apply(self, args);
+    }
 
-          throttler = [target, method, timer];
+    throttler = [target, method, timer];
 
-          this._throttlers.push(throttler);
+    this._throttlers.push(throttler);
 
-          return throttler;
-        },
-        ...
-      };
+    return throttler;
+  },
+  ...
+};
+{% endhighlight %}
 
   #### What do they do?
 
@@ -877,11 +927,13 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
   `run_loop.js`
 
-      run._addQueue = function(name, after) {
-        if (indexOf.call(run.queues, name) === -1) {
-          run.queues.splice(indexOf.call(run.queues, after)+1, 0, name);
-        }
-      };
+{% highlight javascript %}
+run._addQueue = function(name, after) {
+  if (indexOf.call(run.queues, name) === -1) {
+    run.queues.splice(indexOf.call(run.queues, after)+1, 0, name);
+  }
+};
+{% endhighlight %}
 
   Adds a new queue, `name`. All jobs of this queue is executed after `after`. `ember-routing` and `ember-views` use this method to add `render`, `afterRender` and `routerTransitions` queue.
 
@@ -889,26 +941,28 @@ In conclusion, the `Backburner` starts `DeferredActionQueues` to run different j
 
 Using the run loop is amazingly simple. For instance, in `ember-views/lib/views/view.js`,
 
-     _insertElementLater: function(fn) {
-      this._scheduledInsert = run.scheduleOnce('render', this, '_insertElement', fn);
-    },
+{% highlight javascript %}
+ _insertElementLater: function(fn) {
+  this._scheduledInsert = run.scheduleOnce('render', this, '_insertElement', fn);
+},
 
-    _insertElement: function (fn) {
-      this._scheduledInsert = null;
-      this.currentState.insertElement(this, fn);
-    },
+_insertElement: function (fn) {
+  this._scheduledInsert = null;
+  this.currentState.insertElement(this, fn);
+},
 
-    ...
+...
 
-    replaceIn: function(target) {
-      Ember.assert("You tried to replace in (" + target + ") but that isn't in the DOM", jQuery(target).length > 0);
-      Ember.assert("You cannot replace an existing Ember.View. Consider using Ember.ContainerView instead.", !jQuery(target).is('.ember-view') && !jQuery(target).parents().is('.ember-view'));
+replaceIn: function(target) {
+  Ember.assert("You tried to replace in (" + target + ") but that isn't in the DOM", jQuery(target).length > 0);
+  Ember.assert("You cannot replace an existing Ember.View. Consider using Ember.ContainerView instead.", !jQuery(target).is('.ember-view') && !jQuery(target).parents().is('.ember-view'));
 
-      this._insertElementLater(function() {
-        jQuery(target).empty();
-        this.$().appendTo(target);
-      });
-    }
+  this._insertElementLater(function() {
+    jQuery(target).empty();
+    this.$().appendTo(target);
+  });
+}
+{% endhighlight %}
 
 `replaceIn` uses the `Ember.run.scheduleOnce` method to schedule a replace in the `render` queue.
 
@@ -918,25 +972,27 @@ As we have seen in the above code, Ember.js uses the run loop everywhere. But be
 
 To answer this question, let's take a look at this piece of code from `ember-views/lib/system/event_dispatcher.js`,
 
-    _dispatchEvent: function(object, evt, eventName, view) {
-      var result = true;
+{% highlight javascript %}
+_dispatchEvent: function(object, evt, eventName, view) {
+  var result = true;
 
-      var handler = object[eventName];
-      if (typeOf(handler) === 'function') {
-        result = run(object, handler, evt, view);
-        // Do not preventDefault in eventManagers.
-        evt.stopPropagation();
-      }
-      else {
-        result = this._bubbleEvent(view, evt, eventName);
-      }
+  var handler = object[eventName];
+  if (typeOf(handler) === 'function') {
+    result = run(object, handler, evt, view);
+    // Do not preventDefault in eventManagers.
+    evt.stopPropagation();
+  }
+  else {
+    result = this._bubbleEvent(view, evt, eventName);
+  }
 
-      return result;
-    },
+  return result;
+},
 
-    _bubbleEvent: function(view, evt, eventName) {
-      return run(view, view.handleEvent, eventName, evt);
-    }
+_bubbleEvent: function(view, evt, eventName) {
+  return run(view, view.handleEvent, eventName, evt);
+}
+{% endhighlight %}
 
 Notice the `Ember.run` calls in these functions. Every event sent to Ember.js initiates a run loop. The event handle will then possibly trigger some binding jobs and render jobs. After all the jobs are down (no pending jobs), the event is successfully handled and the run loop is completed.
 

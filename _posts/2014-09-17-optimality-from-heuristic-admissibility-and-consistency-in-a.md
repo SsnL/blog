@@ -3,7 +3,7 @@ layout: post
 title: "Optimality From Heuristic Admissibility and Consistency in A*"
 modified:
 categories:
-excerpt: Admissible and consistent heuristics and optimality of the A* algorithm.
+excerpt: Admissible and consistent heuristics and optimality of the A* algorithm
 comments: true
 tags: [CS 188]
 image:
