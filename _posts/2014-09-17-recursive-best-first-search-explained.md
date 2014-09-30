@@ -5,7 +5,10 @@ modified:
 categories:
 excerpt: Inspect the pseudo-code of recursive best first search
 comments: true
-tags: [CS 188]
+tags:
+  - CS 188
+  - Artificial Intelligence
+  - Algorithms
 image:
   feature:
 date: 2014-09-17T12:18:15-07:00

@@ -5,7 +5,10 @@ modified:
 categories:
 excerpt: Intuitive explanation of the square root branching factor
 comments: true
-tags: [CS 188]
+tags:
+  - CS 188
+  - Artificial Intelligence
+  - Algorithms
 image:
   feature:
 date: 2014-09-17T23:46:08-07:00

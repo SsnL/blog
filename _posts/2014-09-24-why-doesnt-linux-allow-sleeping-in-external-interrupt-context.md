@@ -5,7 +5,10 @@ modified:
 categories:
 comments: true
 excerpt: Thoughts on Linux threads implementation
-tags: []
+tags:
+  - CS 162
+  - Operating System
+  - Linux
 image:
   feature:
 date: 2014-09-24T13:45:34-07:00

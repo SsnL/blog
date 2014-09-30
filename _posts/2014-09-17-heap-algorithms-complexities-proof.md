@@ -5,7 +5,10 @@ modified:
 categories:
 excerpt: Mathematical proof of algorithms including heapify, heap construction and heap sort
 comments: true
-tags: []
+tags:
+  - CS 61B
+  - Data Structure
+  - Algorithms
 image:
   feature:
 date: 2014-09-17T15:35:10-07:00

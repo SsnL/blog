@@ -7,6 +7,7 @@ excerpt: Discuss the classic birthday problem generally
 comments: true
 tags:
   - CS 70
+  - Probability Theory
 image:
   feature: null
 date: 2014-09-17T10:32:56-07:00

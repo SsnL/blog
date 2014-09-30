@@ -2,14 +2,17 @@
 layout: post
 title: "Local Search Advantages"
 modified:
-categories: 
+categories:
 comments: true
 excerpt: Comparing local search algorithms with path-constructing algorithms
-tags: []
+tags:
+  - CS 188
+  - Artificial Intelligence
+  - Algorithms
 image:
   feature:
   credit:
-  creditlink: 
+  creditlink:
 date: 2014-09-22T14:45:16-07:00
 ---
 

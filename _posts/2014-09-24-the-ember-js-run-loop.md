@@ -5,7 +5,9 @@ modified:
 categories:
 comments: true
 excerpt: Explore into Ember.js Run Loop implementation
-tags: [Ember.js]
+tags:
+  - Ember.js
+  - Sellegit
 image:
   feature:
 date: 2014-09-24T13:54:49-07:00
