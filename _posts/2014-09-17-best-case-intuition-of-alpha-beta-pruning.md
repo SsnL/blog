@@ -6,7 +6,6 @@ categories:
 excerpt: Intuitive explanation of the square root branching factor
 comments: true
 tags:
-  - CS 188
   - Artificial Intelligence
   - Algorithms
 image:

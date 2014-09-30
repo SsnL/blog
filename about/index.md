@@ -12,7 +12,9 @@ image:
 
 Hello there!
 
-I am Simon, a second-year undergraduate student at the great UC Berkeley. I enjoy my majors, computer science and statistics, as well as my intended minor, philosophy. My fields of interests are:
+I am Simon, a second-year undergraduate student at the great UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. Other than that, I am currently a software intern at Sellegit Inc.
+
+My fields of interests include:
 
 + Artificial intelligence
 + Machine learning

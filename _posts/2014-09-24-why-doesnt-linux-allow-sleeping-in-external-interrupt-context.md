@@ -6,7 +6,6 @@ categories:
 comments: true
 excerpt: Thoughts on Linux threads implementation
 tags:
-  - CS 162
   - Operating System
   - Linux
 image:

@@ -6,7 +6,6 @@ categories:
 excerpt: Inspect the pseudo-code of recursive best first search
 comments: true
 tags:
-  - CS 188
   - Artificial Intelligence
   - Algorithms
 image:

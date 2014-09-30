@@ -6,7 +6,6 @@ categories:
 comments: true
 excerpt: Comparing local search algorithms with path-constructing algorithms
 tags:
-  - CS 188
   - Artificial Intelligence
   - Algorithms
 image:

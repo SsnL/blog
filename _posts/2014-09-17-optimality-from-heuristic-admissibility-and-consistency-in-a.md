@@ -6,7 +6,6 @@ categories:
 excerpt: Admissible and consistent heuristics and optimality of the A* algorithm
 comments: true
 tags:
-  - CS 188
   - Artificial Intelligence
   - Algorithms
 image:
