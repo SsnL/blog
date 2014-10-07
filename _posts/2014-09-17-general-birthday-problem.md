@@ -8,7 +8,9 @@ comments: true
 tags:
   - Probability Theory
 image:
-  feature: null
+  feature:
+  credit:
+  creditlink:
 date: 2014-09-17T10:32:56-07:00
 published: true
 ---

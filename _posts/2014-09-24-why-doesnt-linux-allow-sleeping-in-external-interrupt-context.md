@@ -10,6 +10,8 @@ tags:
   - Linux
 image:
   feature:
+  credit:
+  creditlink:
 date: 2014-09-24T13:45:34-07:00
 ---
 
