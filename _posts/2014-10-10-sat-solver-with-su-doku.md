@@ -3,7 +3,7 @@ layout: post
 title: "SAT Solver with Su Doku!"
 modified: 2014-10-10 10:40:26 -0700
 comments: true
-excerpt: How computer beat me on Su Doku
+excerpt: How computer beats me on Su Doku
 tags: [Artificial Intelligence, Su Doku]
 image:
   feature: 
