@@ -12,7 +12,7 @@ image:
 
 Hello there!
 
-I am Tongzhou Wang (also go by the name Simon), a second-year undergraduate student at the great UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. Other than that, I am currently a software intern at Sellegit Inc.
+I am Tongzhou Wang (also go by the name Simon), a second-year undergraduate student at the great UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. Other than that, I am currently a software intern at Sellegit Inc. I have worked on some small features on website frontend and database. Now I am involved in an Android App development, [Peach](https://play.google.com/store/apps/details?id=peach.fdroid).
 
 My fields of interests include:
 
