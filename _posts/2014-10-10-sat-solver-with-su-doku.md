@@ -23,7 +23,52 @@ An idea just stroke me: why not try solving Su Doku as a SAT problem?
 
 With a few files from course project, I was able to make a Su Doku solver work with a few rules expressed in logic sentences (which are really nice since all of them are in CNF without any extra manipulation). 
 
-Here's how my Su Doku solver behaves on a "hard" one that got me stuck for hours:
+Symbols are fairly straightforward. I have symbol $$C[i][j][k]$$ representing number $$k$$ is chosen in the block at row $$i$$ and col $$j$$. That is the best I can do with propositional logic.
+
+In order to have the most concise expressions of the rule (at least IMO), I choose the following sentences:
+
+  + Each block must have exactly one of the symbols set to true.
+  + In each 3-by-3 square, all numbers (1 to 9) must be present.
+      + For example, in the top left 3-by-3 square, to ensure number 2 is present, I have
+      
+          $$C[0][0][2] \lor C[0][1][2] \lor \cdots C[3][2][2] \lor C[3][3][2]$$
+          
+        There is no need to ask for there to be only one number 2 since we ask **each** of the nine numbers to appear in the square.
+  + In each row or column, all numbers must be present.
+        
+Here comes the actual code that builds rule expressions.  
+*(Actually $$C[i][j][k]$$ considers number $$k + 1$$ because we count from 0 in computer science.)*
+  
+{% highlight python %}
+def rules():
+    s = set()
+    # Exclusion in each block
+    for i in xrange(9):
+        for j in xrange(9):
+            s.add(exactlyOne(symbols[i][j]))
+    # All numbers must present in each 3-by-3 square
+    for li in xrange(3):
+        for lj in xrange(3):
+            for n in xrange(9):
+                e = None
+                for si in xrange(3):
+                    for sj in xrange(3):
+                        e = tryOr(e, symbols[li * 3 + si][lj * 3 + sj][n])
+                s.add(e)
+    # All numbers must present in each row / col
+    for i in xrange(9):
+        for n in xrange(9):
+            row = None
+            col = None
+            for j in xrange(9):
+                row = tryOr(row, symbols[i][j][n])
+                col = tryOr(col, symbols[j][i][n])
+            s.add(row)
+            s.add(col)
+    return s
+{% endhighlight %}
+
+Finally, let us see how my Su Doku solver behaves on a "hard" one (which got me stuck for hours):
 
     >>> solve(".163.....3.95.....4.7..69...8.2.......3.9.7.......8.3...16..2.4.....23.6.....157.")
     Problem:
@@ -57,12 +102,12 @@ Here's how my Su Doku solver behaves on a "hard" one that got me stuck for hours
     ---------------
     Total: 0.66s
 
-The solver can be made faster since
+Clearly, it is at least $$\frac{2\text{h} \cdot 3600\text{s/h}}{0.66} = 10909$$ times faster than me, an intellectual human being. The solver can be made even faster since
 
-  + a lot of sanity checking are done along the way, and 
-  + a wrapper of SAT solver and logic sentences exist.
+  + a lot of sanity checking is done along the way, and 
+  + a wrapper of SAT solver and logic sentences does exist.
 
-Nevertheless, I am still quite amazed how the SAT solver ([PycoSAT](http://fmv.jku.at/picosat/) here) deals with Su Doku so efficiently. Artificial intelligence is one of the most intriguing areas of computer science to me. 
+I am quite amazed how the SAT solver ([PycoSAT](http://fmv.jku.at/picosat/) here) deals with Su Doku in such an efficient fashion. Artificial intelligence is one of the most intriguing areas of computer science to me. 
 
 Next time, I will try to solve another AI problem that I attempted before, designing an AI agent for the card game, [*Ascension*](http://ascensiongame.com/).
 
