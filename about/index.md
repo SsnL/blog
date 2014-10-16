@@ -28,4 +28,6 @@ My fields of interests include:
 
 As for hobbies, I have played soccer for 10 years. I am also a not bad Magic player. :P
 
+Please find my resume [here](http://ssnl.github.io/about/Tongzhou Wang - Resumé.pdf).
+
 This blog came alive on 9/17/2014. All my notes and thoughts will be posted here.
