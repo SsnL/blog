@@ -28,7 +28,7 @@ My fields of interests include:
 
 As for hobbies, I have been playing soccer for 10 years. I am also a not bad Magic player. :P
 
-Please find my resume [here](http://ssnl.github.io/about/Tongzhou Wang - Resumé.pdf).
+Please find my resume [here]({{ site.url }}/about/{{ site.resume_name }}).
 
 Random facts:
 

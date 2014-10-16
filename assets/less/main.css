@@ -1,4 +1,4 @@
-/*! 
+/*!
 // ===========================================================
 // HPSTR Jekyll Theme
 // By: Michael Rose
@@ -249,7 +249,7 @@ a {
   transition: all 0.2s ease;
 }
 body {
-  font-family: 'Lato', Calibri, Arial, sans-serif;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
   color: #222222;
 }
 h1,
@@ -258,7 +258,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Lato', Calibri, Arial, sans-serif;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
 }
 h1 {
   font-size: 32px;
@@ -1664,10 +1664,10 @@ svg:not(:root) {
 .dl-menuwrapper li .dl-submenu {
   display: none;
 }
-/* 
+/*
 When a submenu is openend, we will hide all li siblings.
 For that we give a class to the parent menu called "dl-subview".
-We also hide the submenu link. 
+We also hide the submenu link.
 The opened submenu will get the class "dl-subviewopen".
 All this is done for any sub-level being entered.
 */
@@ -4043,7 +4043,7 @@ body {
   color: #ffffff;
 }
 @media only screen and (min-width: 62.5em) {
-  
+
 }
 .feature .header-title h2 {
   margin: 0;

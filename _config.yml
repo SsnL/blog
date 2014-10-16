@@ -6,13 +6,13 @@ words_per_minute: 160
 #Your site's domain goes here. Leave localhost server or blank when working locally.
 url:              http://ssnl.github.io
 # url:              http://localhost:4000
-resume_name:      "Tongzhou Wang - Resumé.pdf"
+resume_name:      "Tongzhou Wang - Resumé.pdf"
 
 # Owner/author information
 owner:
   name: Tongzhou Wang
   avatar: avatar.jpg
-  bio: "Studying computer science, statistics and philosophy at UC Berkeley"
+  bio: "Studying computer science, statistics and philosophy at the great UC Berkeley"
   email: tongzhou.wang.1994@gmail.com
   # Social networking links used in footer. Update and remove as you like.
   twitter:
