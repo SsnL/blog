@@ -102,7 +102,7 @@ Finally, let us see how my Su Doku solver behaves on a "hard" problem (one that 
     ---------------
     Total: 0.66s
 
-Clearly, it is at least $$\frac{2\text{h} \cdot 3600\text{s/h}}{0.66} = 10909$$ times faster than me, an intellectual human being. The solver can be made even faster since
+Clearly, it is at least $$\frac{2\text{h} \cdot 3600\text{s/h}}{0.66\text{s}} = 10909$$ times faster than me, an intellectual human being. The solver can be made even faster since
 
   + a lot of sanity checking is done along the way, and
   + a wrapper of SAT solver and logic sentences does exist.
