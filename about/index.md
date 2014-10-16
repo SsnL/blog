@@ -30,6 +30,13 @@ As for hobbies, I have been playing soccer for 10 years. I am also a not bad Mag
 
 Please find my resume [here](http://ssnl.github.io/about/Tongzhou Wang - Resumé.pdf).
 
+Random facts:
+
++ My favorite font is Palatino.
++ I play saxophone starting from middle school.
++ I have a cute 6-year-old young brother.
++ Chinese food in China is way better than Chinese food here.
+
 This blog came alive on 9/17/2014. All my notes and thoughts will be posted here.
 
 Hope you enjoy it.

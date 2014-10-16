@@ -27,14 +27,14 @@ Symbols are fairly straightforward. I have symbol $$C[i][j][k]$$ representing nu
 
 In order to have the most concise expressions of the rule (at least IMO), I choose the following sentences:
 
-  + Each block must have exactly one of the symbols set to true.
-  + In each 3-by-3 square, all numbers (1 to 9) must be present.
-      + For example, in the top left 3-by-3 square, to ensure number 2 is present, I have
++ Each block must have exactly one of the symbols set to true.
++ In each 3-by-3 square, all numbers (1 to 9) must be present.
+    + For example, in the top left 3-by-3 square, to ensure number 2 is present, I have
 
-          $$C[0][0][2] \lor C[0][1][2] \lor \cdots C[3][2][2] \lor C[3][3][2]$$
+      $$C[0][0][2] \lor C[0][1][2] \lor \cdots C[3][2][2] \lor C[3][3][2]$$
 
-        There is no need to ask for there to be only one number 2 since we ask **each** of the nine numbers to appear in the square.
-  + In each row or column, all numbers must be present.
+      There is no need to ask for there to be only one number 2 since we ask **each** of the nine numbers to appear in the square.
++ In each row or column, all numbers must be present.
 
 Here comes the actual code that builds rule expressions.
 *(Actually $$C[i][j][k]$$ considers number $$k + 1$$ because we count from 0 in computer science.)*
@@ -104,8 +104,8 @@ Finally, let us see how my Su Doku solver behaves on a "hard" problem (one that 
 
 Clearly, it is at least $$\frac{2\text{h} \cdot 3600\text{s/h}}{0.66\text{s}} = 10909$$ times faster than me, an intellectual human being. The solver can be made even faster since
 
-  + a lot of sanity checking is done along the way, and
-  + a wrapper of SAT solver and logic sentences does exist.
++ a lot of sanity checking is done along the way, and
++ a wrapper of SAT solver and logic sentences does exist.
 
 I am quite amazed how the SAT solver ([PycoSAT](http://fmv.jku.at/picosat/) here) deals with Su Doku in such an efficient fashion. Artificial intelligence is one of the most intriguing areas of computer science to me.
 
