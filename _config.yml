@@ -2,8 +2,8 @@ title:            Simon's Scratch Book
 description:
 disqus_shortname: ssnl
 reading_time:     true
-words_per_minute: 160
-#Your site's domain goes here. Leave localhost server or blank when working locally.
+words_per_minute: 130
+# Your site's domain goes here. Leave localhost server or blank when working locally.
 url:              http://ssnl.github.io
 # url:              http://localhost:4000
 
