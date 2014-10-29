@@ -15,7 +15,7 @@ image:
 + Tel: (510) 693-5376 
 + Email: [tongzhou.wang.1994@gmail.com](mailto: tongzhou.wang.1994@gmail.com)
 + GitHub username: [SsnL](https://github.com/SsnL/)
-+ Personal website: [ssnl.github.io](http://ssnl.github.io)## Education#### University of California, Berkeley | Berkeley, CA | Expected May 2016+ B.A. in Computer Science and Statistics.+ Minor in Philosophy.+ Tech. GPA: 3.97. 
++ Personal website: [ssnl.github.io](http://ssnl.github.io)## Education#### University of California, Berkeley | Berkeley, CA | Expected May 2016+ B.A. in Computer Science and Statistics.+ Minor in Philosophy.+ [Unofficial Transcript]({{ site.url }}/about/resume/Transcript.pdf)+ Tech. GPA: 3.97. 
 + Overall GPA: 3.89. 
 + Honors: Dean’s List.#### Shanghai Foreign Language School | Shanghai, China | July 2013## Relevant Coursework
 + Data Structure+ Machine Structure+ Algorithms+ Operating System+ Artificial Intelligence+ Machine Learning+ Probability Theory+ Statistical Analysis+ Game Theory## Skills+ General computer skills:     + Mac OS X    + Windows    + Linux    + vim
