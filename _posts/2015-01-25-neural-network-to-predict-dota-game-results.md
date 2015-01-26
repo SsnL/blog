@@ -3,12 +3,12 @@ layout: post
 title: "Neural Network to Predict DotA Game Results"
 modified: 2015-01-25 20:34:36 -0800
 comments: true
-excerpt: 
+excerpt:
 tags: [Machine Learning]
 image:
-  feature: 
-  credit: 
-  creditlink: 
+  feature: dota.jpg
+  credit: Square
+  creditlink: http://squar3x.deviantart.com/
 date: 2015-01-25 20:34:36 -0800
 ---
 ## Background
@@ -17,7 +17,7 @@ DotA (Defense of the Ancients) is a quite popular MOBA game, where 10 players fi
 Some heroes have abilities that work well together. And some heroes' abilities can be countered if the opposing side has certain heroes. Thus, result of a game is influenced by the lineups of each side to an extent.
 
 ## Goal
-My goal was quite simple. I wanted to predict the outcome of a game given its lineups. 
+My goal was quite simple. I wanted to predict the outcome of a game given its lineups.
 
 But there is more to say about this. In DotA, a patch is released every few months, which changes the game a lot. Some heroes are buffed and regain popularity. Some heroes are nerfed and the win rate plummets. Moreover, a new play style for a certain hero might be discovered and the win rate rises like a rocket. So the relation between used heroes and result changes as the time goes, which limits our selection of data a lot.
 
@@ -43,7 +43,7 @@ Of all these data, 10% are used for validation, 10% are used for testing, and 80
 Due to limited computation power of my machine, the max epoch is set to be 100. In addition, after each epoch of training, the network is tested on the validation set. If the error rate improves, save the network. Otherwise, continue training for 20 more epochs to escape possible local optimum and stop afterwards.
 
 ## Implementation
-All code is written in Python. 
+All code is written in Python.
 
 Data are stored in a MongoDB. For neural nets, I use the PyBrain library. Python's `atexit` module is also used in case that training is interrupted.
 
@@ -55,18 +55,18 @@ The training didn't take long on a Macbook Pro Retina 15-inch 2013 running OS X 
 My speculation is that the interactions of heroes might not matter as much as I thought. The rest 29.6% goes to player skills, luck, strategies, communications, play styles, etc.
 
 ## Future work
-Future works include 
+Future works include
 
 1. update the database each day and only preserve the recent matches. In this way, the predictor can also be updated as the metagame changes;
 2. force the network's weights to be symmetric (or shared) because in the end there are two features describing every hero;
 3. try more complex network structures and activation functions.
 
-I would love to include match making ratings (MMR, a measure of skill) of the players as part of the feature vector. However, Unfortunately, this information is not exposed in API. 
+I would love to include match making ratings (MMR, a measure of skill) of the players as part of the feature vector. However, Unfortunately, this information is not exposed in API.
 
 ## GitHub repository
 The code and saved network are [here](https://github.com/SsnL/dotaPredict). Feel free to comment with any question suggestion.
 
 ## A few unrelated words
-It's been a while since my last post. It's quite difficult to code in China given the slow access to GitHub, Google, StackOverFlow, pretty much everything I needed. Nevertheless, it was really exciting to see my parents, my brother and my girlfriend again. 
+It's been a while since my last post. It's quite difficult to code in China given the slow access to GitHub, Google, StackOverFlow, pretty much everything I needed. Nevertheless, it was really exciting to see my parents, my brother and my girlfriend again.
 
 Hope you had a great holiday as well.

@@ -10,6 +10,8 @@ tags:
   - Algorithms
 image:
   feature:
+  credit:
+  creditlink:
 date: 2014-09-17T11:33:29-07:00
 ---
 
