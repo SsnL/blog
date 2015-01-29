@@ -12,7 +12,7 @@ image:
 
 Hello there!
 
-I am Tongzhou Wang (also go by the name Simon), a second-year undergraduate student at the great UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. In late 2014, I was a software intern at Sellegit Inc, where I worked on website backend as well as an Android app, [Peach](https://play.google.com/store/apps/details?id=peach.fdroid). Currently, I am doing undergraduate research with [Professor Stuart Russell](http://www.cs.berkeley.edu/~russell/) at UC Berkeley.
+I am Tongzhou Wang (also go by the name Simon), a second-year undergraduate student at the great UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. In late 2014, I was a software intern at Sellegit Inc, where I worked on website backend as well as an Android app, [Peach](https://peachapp.com/). Currently, I am doing undergraduate research with [Professor Stuart Russell](http://www.cs.berkeley.edu/~russell/) at UC Berkeley.
 
 My fields of interests include:
 
