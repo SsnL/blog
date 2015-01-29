@@ -175,24 +175,24 @@
 			// }
 		},
 		_closeMenu : function() {
-			var self = this,
-				onTransitionEndFn = function() {
-					self.$menu.off( self.transEndEventName );
-					self._resetMenu();
-				};
+			// var self = this,
+			// 	onTransitionEndFn = function() {
+			// 		self.$menu.off( self.transEndEventName );
+			// 		self._resetMenu();
+			// 	};
 
-			this.$menu.removeClass( 'dl-menuopen' );
-			this.$menu.addClass( 'dl-menu-toggle' );
-			this.$trigger.removeClass( 'dl-active' );
+			// this.$menu.removeClass( 'dl-menuopen' );
+			// this.$menu.addClass( 'dl-menu-toggle' );
+			// this.$trigger.removeClass( 'dl-active' );
 
-			if( this.supportTransitions ) {
-				this.$menu.on( this.transEndEventName, onTransitionEndFn );
-			}
-			else {
-				onTransitionEndFn.call();
-			}
+			// if( this.supportTransitions ) {
+			// 	this.$menu.on( this.transEndEventName, onTransitionEndFn );
+			// }
+			// else {
+			// 	onTransitionEndFn.call();
+			// }
 
-			this.open = false;
+			// this.open = false;
 		},
 		openMenu : function() {
 			if( !this.open ) {
