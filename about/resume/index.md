@@ -17,6 +17,7 @@ image:
 + GitHub username: [SsnL](https://github.com/SsnL/)
 + Personal website: [ssnl.github.io]({{ site.url }})## Education#### University of California, Berkeley | Berkeley, CA | Expected May 2017+ B.A. in Computer Science and Statistics.+ Minor in Philosophy.+ [Unofficial Transcript]({{ site.url }}/about/resume/Transcript.pdf)+ Tech. GPA: 3.98. 
 + Overall GPA: 3.86. 
++ 10 of 15 technical courses A+. 
 + Honors: Dean’s List.#### Shanghai Foreign Language School | Shanghai, China | July 2013## Relevant Coursework
 + Computer Science    + Artificial Intelligence    + Machine Learning    + Operating System    + Compiler and Programming Languages    + Algorithms    + Data Structure    + Machine Structure
 + Statistics    + Game Theory    + Stochastic Process    + Probability Theory    + Statistical Analysis## Skills+ General computer skills:     + Mac OS X    + Windows    + Linux    + vim
@@ -41,8 +42,7 @@ image:
     + Android and iOS development with Xamarin.Forms
     + Ember.js
     + RubyOnRails ## Experience#### Undergraduate Researcher | UC Berkeley, CA | 02/02/2015 - Present
-+ ·	Research in first-order logic inference with BLOG led by [Professor Stuart Russell](http://www.cs.berkeley.edu/~russell/) at UC Berkeley.#### Software Intern | Sellegit Inc., Berkeley, CA | 06/15/2014 - 12/23/2014+ Built a local sales website with Ember.js and RubyOnRails. Worked on HTTP requests buffering, image processing and image database migration.
-    Greatly lowered the number of HTTP requests from client side by implementing a buffered active model adaptor mixin for Ember.js. Reduced the computation load on server side by migrating image database to Cloudinary, an image store service that supports transformation.+ Developed an Android application [Peach](https://peachapp.com/), which hosts fashion auctions, in C# and F# with Xamarin.Forms. 
++ ·	Research adaptive MCMC inference in first-order logic inference led by [Professor Stuart Russell](http://www.cs.berkeley.edu/~russell/) at UC Berkeley.#### Software Intern | Sellegit Inc., Berkeley, CA | 06/15/2014 - 12/23/2014+ A local sales website with Ember.js and RubyOnRails.     Lowered the number of HTTP requests by implementing a buffered active model adaptor mixin. Reduced server’s computation load on server side by migrating image database to Cloudinary.+ Developed an Android application [Peach](https://peachapp.com/), which hosts fashion auctions, in C# and F# with Xamarin.Forms. 
     Implemented introduction page, entrance pages, auction view, overall styling, transitions, and animations in F#. Translated codebase from C# to F#. #### Software Developer | Funbox 365 Co., Shanghai, China | 08/2012 - 10/2013+ Lead a team of 40 active fans, including 3 UI designers, voice actors and testers, working on a PC version of the card game, Ascension. Finished most programming in Visual Basic. #### Volunteer Tutor | Dingxi, Gansu Province, China | 07/2012 - 08/2012+ Tutored 12th grade students in mathematics and English. ## Projects #### PokéFace | BigHack, Stanford University, CA | 04/06/2014 + ·	A web service that analyzes which Pokémon one’s Facebook profile image resembles most. 
 Worked on image RGB histogram comparison in JavaScript.
 #### Molly Weasley Clock| HackJam, UC Berkeley, CA | 03/01/2014+ A remote-controlled LED system with Electric Imp and Flask. Worked on frontend HTTP requests and Electric Imp’s request handling. 
