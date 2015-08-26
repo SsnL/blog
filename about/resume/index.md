@@ -10,7 +10,9 @@ image:
   creditlink: http://texturelovers.com
 ---
 
-# Tongzhou Wang [[pdf version]({{ site.url }}/about/resume/Resume.pdf)]
+Here is the [pdf version]({{ site.url }}/about/resume/Resume.pdf)!
+
+# Tongzhou Wang 
 + Address: Stadium Place Apt. 509, 2312 Fulton St. Berkeley, CA, 94704
 + Tel: (510) 693-5376 
 + Email: [tongzhou.wang.1994@gmail.com](mailto: tongzhou.wang.1994@gmail.com)
