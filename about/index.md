@@ -12,7 +12,9 @@ image:
 
 Hello there!
 
-I am Tongzhou Wang (also go by the name Simon), a second-year undergraduate student at the great UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. In late 2014, I was a software intern at Sellegit Inc, where I worked on website backend as well as an Android app, [Peach](https://peachapp.com/). Currently, I am doing undergraduate research with [Professor Stuart Russell](http://www.cs.berkeley.edu/~russell/) at UC Berkeley.
+I am Tongzhou Wang (also go by the name Simon), a third-year undergraduate student at UC Berkeley. As a person who enjoys engineering and humanity, I am having fun with my majors, computer science and statistics, as well as my intended minor, philosophy. 
+
+In summer 2015, I was a software engineer intern at Facebook Inc., where I helped implementing a unified logging framework as well as built internal debugging tools and services based on the logging schema. In addition, I am also doing undergraduate research with [Professor Stuart Russell](http://www.cs.berkeley.edu/~russell/) on adaptive MCMC algorithm in first-order inference.
 
 My fields of interests include:
 
@@ -21,20 +23,21 @@ My fields of interests include:
 + Data science
 + Natural language processing
 + Computer vision
++ Algortihms
 + Information theory
 + Computation theory
 + Probability theory
 + and many more!
 
-As for hobbies, I have been playing soccer for 10 years. I am also a not bad Magic player. :P
+As for hobbies, I have been playing soccer for 10 years. I am also a not bad Magic:the Gathering player. :P
 
 Please find my résumé [here]({{ site.url }}/about/resume/).
 
-Random facts:
+Random fun facts:
 
 + My favorite font is Palatino.
 + I play saxophone starting from middle school.
-+ I have a cute 8-year-old young brother.
++ I have a cute 9-year-old young brother.
 + Chinese food in China is way better than Chinese food here.
 + I really enjoy Markdown!
 
