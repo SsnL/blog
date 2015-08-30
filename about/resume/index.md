@@ -12,7 +12,7 @@ image:
 
 # Tongzhou Wang [click: [pdf version]({{ site.url }}/about/resume/Resume.pdf)]
 + Address: Stadium Place Apt. 509, 2312 Fulton St. Berkeley, CA, 94704
-+ Tel: (510) 693-5376 
++ Tel: (510) 384-2636 
 + Email: [tongzhou.wang.1994@gmail.com](mailto: tongzhou.wang.1994@gmail.com)
 + GitHub username: [SsnL](https://github.com/SsnL/)
 + Personal website: [ssnl.github.io]({{ site.url }})## Education#### University of California, Berkeley | Berkeley, CA | Expected May 2017+ B.S. in Computer Science and Statistics.+ [Unofficial Transcript]({{ site.url }}/about/resume/Transcript.pdf)
