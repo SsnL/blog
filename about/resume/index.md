@@ -26,6 +26,7 @@ image:
     + C++
     + C#
     + F#
+    + Swift
     + Java
     + Python
     + Ruby
@@ -35,8 +36,8 @@ image:
     + CSS
     + MatLab
     + R
-    + Developing tools: 
-    + Git
+    + Developing tools and skills: 
+    + Git, Mercurial    
     + Android development 
     + iOS development
     + Xamarin.Forms
@@ -46,7 +47,9 @@ image:
      Lowered the amount of HTTP requests by implementing a buffered active model adaptor mixin.
     Reduced server’s computation load by migrating image database to Cloudinary.+ Developed an Android app [Peach](https://peachapp.com/), which hosts fashion auctions, in C# and F# with Xamarin.Forms. 
     Built entrance pages, auction view, and overall animations in F#. 
-    Translated codebase from C# to F#. ## Projects #### PokéFace | BigHack, Stanford University, CA | 04/06/2014 + A web app that analyzes which Pokémon one’s Facebook profile image resembles most. 
+    Translated codebase from C# to F#. ## Projects 
+#### Grue | Berkeley, CA | 03/15/2015 – PRESENT+ iOS app that helps students explore, manage, and sign-up for upcoming student events, and provides event organizers statistics and easy management of the attendants.
+    Worked on backend with Parse, frontend backend integration, and frontend iOS views.#### PokéFace | BigHack, Stanford University, CA | 04/06/2014 + A web app that analyzes which Pokémon one’s Facebook profile image resembles most. 
 
     Worked on image RGB histogram comparison in JavaScript.
 #### Molly Weasley Clock| HackJam, UC Berkeley, CA | 03/01/2014+ A remote-controlled LED system with Electric Imp and Flask. 
