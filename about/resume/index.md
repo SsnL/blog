@@ -48,7 +48,7 @@ image:
     Reduced server’s computation load by migrating image database to Cloudinary.+ Developed an Android app [Peach](https://peachapp.com/), which hosts fashion auctions, in C# and F# with Xamarin.Forms. 
     Built entrance pages, auction view, and overall animations in F#. 
     Translated codebase from C# to F#. ## Projects 
-#### Grue | Berkeley, CA | 03/15/2015 – PRESENT+ iOS app that helps students explore, manage, and sign-up for upcoming events, and provides event organizers statistics and easy management of the attendants.
+#### Grue | Berkeley, CA | 03/15/2015 – Present+ iOS app that helps students explore, manage, and sign-up for upcoming events, and provides event organizers statistics and easy management of the attendants.
     Worked on backend with Parse, frontend backend integration, and frontend iOS views.#### PokéFace | BigHack, Stanford University, CA | 04/06/2014 + A web app that analyzes which Pokémon one’s Facebook profile image resembles most. 
 
     Worked on image RGB histogram comparison in JavaScript.
