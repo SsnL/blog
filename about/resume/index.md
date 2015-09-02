@@ -52,10 +52,10 @@ image:
     Worked on backend with Parse, frontend backend integration, and frontend iOS views.#### PokéFace | BigHack, Stanford University, CA | 04/06/2014 + A web app that analyzes which Pokémon one’s Facebook profile image resembles most. 
 
     Worked on image RGB histogram comparison in JavaScript.
-#### Molly Weasley Clock| HackJam, UC Berkeley, CA | 03/01/2014+ A remote-controlled LED system with Electric Imp and Flask. 
+#### Molly Weasley Clock | HackJam, UC Berkeley, CA | 03/01/2014+ A remote-controlled LED system with Electric Imp and Flask. 
     Worked on frontend HTTP requests and Electric Imp’s request handling. 
 #### BeleTears | BearHack, UC Berkeley, CA | 11/24/2013+ An auction-based course enrollment system written in Python 3. 
 
-    Worked on TUI, input parsing and the underlying auction system.#### PyMissile | Carnegie Mellon University, PA | 08/2013 + A two-player shooting game with the setting of outer space where missiles are influenced by gravity from celestial bodies. 
+    Worked on TUI, input parsing and the underlying auction system.#### PyMissile | Carnegie Mellon University, PA | 08/2013 + A two-player shooting game where missile trajectories are influenced by gravity from celestial bodies
 
     Built the entire game with Python 2 and Pygame.

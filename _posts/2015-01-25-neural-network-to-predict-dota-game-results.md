@@ -61,7 +61,7 @@ Future works include
 2. force the network's weights to be symmetric (or shared) because in the end there are two features describing every hero;
 3. try more complex network structures and activation functions.
 
-I would love to include match making ratings (MMR, a measure of skill) of the players as part of the feature vector. However, Unfortunately, this information is not exposed in API.
+I would love to include match making ratings (MMR, a measure of skill) of the players as part of the feature vector. However, unfortunately, this information is not exposed in API.
 
 ## GitHub repository
 The code and saved network are [here](https://github.com/SsnL/dotaPredict). Feel free to comment with any question suggestion.
