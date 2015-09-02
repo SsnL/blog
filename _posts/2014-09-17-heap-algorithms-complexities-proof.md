@@ -1,7 +1,4 @@
-
-  feature:
-  credit:
-  creditlink:---
+---
 layout: post
 title: "Proof of Heap Algorithms Complexities"
 modified:
