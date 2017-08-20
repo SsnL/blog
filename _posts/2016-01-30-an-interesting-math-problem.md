@@ -95,6 +95,6 @@ hover $$\rightarrow$$
     onmouseover="this.style.color='black';"
     onmouseout="this.style.color='white';"
     markdown="1">
-Let $$S_n$$ be constructed as above, through $$R_n$$. Let $$a$$ be $$R_n$$'s edge length. Consider any two edges $$i, j$$ in $$R_n$$. If they share a vertex, then $$i$$ and $$j$$ must be edges of an equilateral triangle, and thus their midpoints will be $$\frac{a}{2}$$ apart. Otherwise, $$i$$ and $$j$$ must form a regular tetrahedron, and it can be calculated that the midpoints be $$\frac{\sqrt{2}}{2}$$ apart.
+Let $$S_n$$ be constructed as above, through $$R_n$$. Let $$a$$ be $$R_n$$'s edge length. Consider any two edges $$i, j$$ in $$R_n$$. If they share a vertex, then $$i$$ and $$j$$ must be edges of an equilateral triangle, and thus their midpoints will be $$\frac{1}{2}$$ apart. Otherwise, $$i$$ and $$j$$ must form a regular tetrahedron, and it can be calculated that the midpoints be $$\frac{\sqrt{2}}{2}$$ apart.
 </span>
 
