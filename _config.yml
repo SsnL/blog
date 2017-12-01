@@ -4,7 +4,7 @@ disqus_shortname: ssnl
 reading_time:     true
 words_per_minute: 130
 # Your site's domain goes here. Leave localhost server or blank when working locally.
-url:              http://ssnl.github.io
+url:              https://ssnl.github.io/blog
 # url:              http://localhost:4000
 
 # Owner/author information
