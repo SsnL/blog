@@ -15,8 +15,8 @@
 				<h4>{{ site.owner.name }}</h4>
 				<p>{{ site.owner.bio }}</p>
 			</li>
-			<li><a href="{{ site.url }}/about/">More About Me</a></li>
-			<li><a href="{{ site.url }}/about/resume/">Résumé</a></li>
+			<li><a href="{{ site.about_url }}">More About Me</a></li>
+			<li><a href="{{ site.about_url }}/assets/docs/about/resume.pdf">Résumé</a></li>
 			{% if site.owner.email %}<li>
 				<a href="mailto:{{ site.owner.email }}"><i class="fa fa-envelope"></i> Email</a>
 			</li>{% endif %}
